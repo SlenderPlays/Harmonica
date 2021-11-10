@@ -14,6 +14,8 @@
 
 	<StackPanel>
 		<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<TextBlock Text="{Binding Buffering}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<TextBlock Text="{Binding Pausable}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 		<Button Command="{Binding PlayStop}"> Play/Stop </Button>
 	</StackPanel>
 </Window>
