@@ -67,7 +67,10 @@ namespace Harmonica.ViewModels
 				mp = new MediaPlayer(media);
 				mp.Buffering += Mp_Buffering;
 				mp.PausableChanged += Mp_PausableChanged;
-				
+
+				mp.Play();
+				mp.SetPause(true); // mp.Pause(); doesn't work... weird
+
 				// Can't really determine when its done buffering, best thing to do is to download the file, and let the media player buffer from downloaded file.
 				// new Media( libVLC,new StreamMediaInput(STREAM)) // maybe I can do some stream magickery, otherwise I'm probably going to need to wrangle with
 				// the buffer myself to get it to work like I want. 
