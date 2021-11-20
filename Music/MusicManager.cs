@@ -33,7 +33,6 @@ namespace Harmonica.Music
 
 			libVLC = new LibVLC();
 			MusicPlayer = new MusicPlayer(libVLC);
-
 			// TODO: Get path from config...
 			MusicPath = "D:/Programming/Atestat/WebServer/songs/";
 			mediaLocator = new MediaLocator(MusicPath);
