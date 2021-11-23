@@ -12,7 +12,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<StackPanel>
+	<StackPanel Name="MyPanel">
 		<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 		<TextBlock Text="{Binding Buffering}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 		<TextBlock Text="{Binding Pausable}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
