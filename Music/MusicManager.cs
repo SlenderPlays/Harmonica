@@ -20,9 +20,23 @@ namespace Harmonica.Music
 			}
 		}
 
-		// TODO: private?
-		public LibVLC libVLC;
-		public MusicPlayer MusicPlayer { get; private set; }
+		public static LibVLC LibVLC {
+			get => Instance.libVLC;
+			private set => Instance.libVLC = value;
+		}
+		public static MusicPlayer MusicPlayer
+		{
+			get => Instance.musicPlayer;
+			private set => Instance.musicPlayer = value;
+		}
+		public static MediaLocator MediaLocator
+		{
+			get => Instance.mediaLocator;
+			private set => Instance.mediaLocator = value;
+		}
+
+		private LibVLC libVLC;
+		private MusicPlayer musicPlayer;
 		private MediaLocator mediaLocator;
 
 		public string MusicPath { get; private set; }
@@ -32,7 +46,7 @@ namespace Harmonica.Music
 			LibVLCSharp.Shared.Core.Initialize();
 
 			libVLC = new LibVLC();
-			MusicPlayer = new MusicPlayer(libVLC);
+			musicPlayer = new MusicPlayer(libVLC);
 			// TODO: Get path from config...
 			MusicPath = "D:/Programming/Atestat/WebServer/songs/";
 			mediaLocator = new MediaLocator(MusicPath);

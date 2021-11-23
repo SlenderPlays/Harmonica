@@ -24,7 +24,6 @@ namespace Harmonica.Models
 		public string FilePath { get; private set; }
 		public string Title { get; set; } = DefaultTitle;
 		public string[] Authors { get; set; } = { DefaultAuthor };
-		//public int Length { get; set; } = -1;
 
 		public Song WithTitle(string? title)
 		{

@@ -32,8 +32,13 @@ namespace Harmonica.Music
 
 		public void PreparePlay(Media media)
 		{
-			Play(media);
-			Pause();
+			media.AddOption(":no-video");
+			ThreadPool.QueueUserWorkItem(async _ => {
+				await media.Parse();
+				mediaPlayer.Media = media;
+				mediaPlayer.Play();
+				Pause();
+			});
 		}
 
 		public void Pause() => mediaPlayer.SetPause(true);

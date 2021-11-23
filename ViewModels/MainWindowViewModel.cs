@@ -22,7 +22,7 @@ namespace Harmonica.ViewModels
 
 		public MainWindowViewModel()
 		{
-			MusicManager.Instance.MusicPlayer.mediaPlayer.Buffering += MediaPlayer_Buffering;
+			MusicManager.MusicPlayer.mediaPlayer.Buffering += MediaPlayer_Buffering;
 		}
 
 		private void MediaPlayer_Buffering(object? sender, MediaPlayerBufferingEventArgs e)
@@ -32,10 +32,10 @@ namespace Harmonica.ViewModels
 
 		void PlayStop()
 		{
-			if (MusicManager.Instance.MusicPlayer.mediaPlayer.IsPlaying)
-				MusicManager.Instance.MusicPlayer.Pause();
+			if (MusicManager.MusicPlayer.mediaPlayer.IsPlaying)
+				MusicManager.MusicPlayer.Pause();
 			else
-				MusicManager.Instance.MusicPlayer.Unpause();
+				MusicManager.MusicPlayer.Unpause();
 		}
 	}
 }
