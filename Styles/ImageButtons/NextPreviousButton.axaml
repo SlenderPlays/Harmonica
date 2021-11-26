@@ -1,0 +1,74 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<StackPanel Width="100" Height="100" Margin="10">
+			<Button Classes="NextButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Margin="20"/>
+
+			<Button Classes="PreviousButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"/>
+		</StackPanel>
+	</Design.PreviewWith>
+
+	<Style Selector="Button.NextButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Next.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.NextButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Next.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.NextButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Next.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.PreviousButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Previous.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.PreviousButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Previous.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.PreviousButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Previous.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</Styles>

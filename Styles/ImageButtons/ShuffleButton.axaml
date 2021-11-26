@@ -1,0 +1,74 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<StackPanel Width="100" Height="100" Margin="10">
+			<Button Classes="ShuffleOnButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Margin="20"/>
+
+			<Button Classes="ShuffleOffButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"/>
+		</StackPanel>
+	</Design.PreviewWith>
+
+	<Style Selector="Button.ShuffleOnButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/ShuffleOn.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.ShuffleOnButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/ShuffleOn.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.ShuffleOnButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/ShuffleOn.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.ShuffleOffButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/ShuffleOff.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.ShuffleOffButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/ShuffleOff.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.ShuffleOffButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/ShuffleOff.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</Styles>

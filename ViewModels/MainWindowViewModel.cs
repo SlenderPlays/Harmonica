@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Harmonica.Music;
 using LibVLCSharp.Shared;
 using ReactiveUI;
@@ -28,14 +29,6 @@ namespace Harmonica.ViewModels
 		private void MediaPlayer_Buffering(object? sender, MediaPlayerBufferingEventArgs e)
 		{
 			Buffering = $"Buffering: {e.Cache}%";
-		}
-
-		void PlayStop()
-		{
-			if (MusicManager.MusicPlayer.mediaPlayer.IsPlaying)
-				MusicManager.MusicPlayer.Pause();
-			else
-				MusicManager.MusicPlayer.Unpause();
 		}
 	}
 }

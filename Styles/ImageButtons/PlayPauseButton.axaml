@@ -1,0 +1,74 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<StackPanel Width="100" Height="100" Margin="10">
+			<Button Classes="PauseButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Margin="20"/>
+			
+			<Button Classes="PlayButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"/>
+		</StackPanel>
+	</Design.PreviewWith>
+	
+	<Style Selector="Button.PauseButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Pause.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.PauseButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Pause.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.PauseButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Pause.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.PlayButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Play.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.PlayButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Play.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.PlayButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Play.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</Styles>

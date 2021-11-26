@@ -1,0 +1,105 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<StackPanel Width="100" Height="100" Margin="10">
+			<Button Classes="RepeatOffButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Margin="10"/>
+
+			<Button Classes="RepeatOnButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Margin="10"/>
+
+			<Button Classes="RepeatOneButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Margin="10"/>
+		</StackPanel>
+	</Design.PreviewWith>
+
+	<Style Selector="Button.RepeatOffButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOff.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.RepeatOffButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOff.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.RepeatOffButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOff.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.RepeatOnButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOn.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.RepeatOnButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOn.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.RepeatOnButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOn.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="Button.RepeatOneButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOne.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.RepeatOneButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOne.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.RepeatOneButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/RepeatOne.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+</Styles>

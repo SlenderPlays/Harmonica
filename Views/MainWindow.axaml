@@ -12,10 +12,51 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<StackPanel>
-		<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		<TextBlock Text="{Binding Buffering}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		<TextBlock Text="{Binding Pausable}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		<Button Command="{Binding PlayStop}"> Play/Stop </Button>
-	</StackPanel>
+	<Window.Styles>
+		<StyleInclude Source="/Styles/ImageButtons/PlayPauseButton.axaml"/>
+		<StyleInclude Source="/Styles/ImageButtons/NextPreviousButton.axaml"/>
+		<StyleInclude Source="/Styles/ImageButtons/ShuffleButton.axaml"/>
+		<StyleInclude Source="/Styles/ImageButtons/RepeatButton.axaml"/>
+	</Window.Styles>
+	
+	<Grid ColumnDefinitions="*,Auto"
+				RowDefinitions="*,50"
+				ShowGridLines="True">
+		<!-- Player -->
+		<!-- LocalFiles -->
+		<!-- PlayerControls -->
+		<Grid Grid.Row="1"  
+					Grid.Column="0"
+					Grid.ColumnSpan="2"
+					RowDefinitions="Auto,*">
+			
+			
+			<StackPanel Grid.Row="1"
+									Orientation="Horizontal"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center">
+
+				<Button Classes="ShuffleOffButton" Click="OnShuffleButton_Pressed"
+								Width="32"
+								Height="32"/>
+
+				<Button Classes="PreviousButton" Click="OnPreviousButton_Pressed"
+								Width="32"
+								Height="32"/>
+				
+				<Button Classes="PlayButton" Click="OnPlayButton_Pressed"
+								Width="32"
+								Height="32"/>
+
+				<Button Classes="NextButton" Click="OnNextButton_Pressed"
+								Width="32"
+								Height="32"/>
+
+				<Button Classes="RepeatOffButton" Click="OnRepeatButton_Pressed"
+								Width="32"
+								Height="32"/>
+				
+			</StackPanel>
+		</Grid>
+	</Grid>
 </Window>
