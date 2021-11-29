@@ -16,7 +16,7 @@ namespace Harmonica
 			AvaloniaXamlLoader.Load(this);
 			if (!Design.IsDesignMode)
 				MusicManager.MusicPlayer.PreparePlay(
-					new Media(MusicManager.LibVLC,"https://archive.org/download/ImagineDragons_201410/imagine%20dragons.mp4", FromType.FromLocation)
+					new Media(MusicManager.LibVLC, "file:///D:/Programming/Atestat/WebServer/songs/imagine_dragons.mp4", FromType.FromLocation)
 				);
 		}
 

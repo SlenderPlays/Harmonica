@@ -13,14 +13,11 @@
     </Design.DataContext>
 
 	<Window.Styles>
-		<StyleInclude Source="/Styles/ImageButtons/PlayPauseButton.axaml"/>
-		<StyleInclude Source="/Styles/ImageButtons/NextPreviousButton.axaml"/>
-		<StyleInclude Source="/Styles/ImageButtons/ShuffleButton.axaml"/>
-		<StyleInclude Source="/Styles/ImageButtons/RepeatButton.axaml"/>
+		<StyleInclude Source="/Styles/PlayerControls.axaml"/>
 	</Window.Styles>
 	
 	<Grid ColumnDefinitions="*,Auto"
-				RowDefinitions="*,50"
+				RowDefinitions="*,60"
 				ShowGridLines="True">
 		<!-- Player -->
 		<!-- LocalFiles -->
@@ -31,7 +28,7 @@
 					RowDefinitions="Auto,*">
 			
 			
-			<StackPanel Grid.Row="1"
+			<StackPanel Grid.Row="0"
 									Orientation="Horizontal"
 									VerticalAlignment="Center"
 									HorizontalAlignment="Center">
@@ -56,6 +53,24 @@
 								Width="32"
 								Height="32"/>
 				
+			</StackPanel>
+			<StackPanel Grid.Row="1"
+									Orientation="Horizontal"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center">
+				<Label Name="CurrentTime"
+							 FontSize="11"
+							 VerticalAlignment="Center"
+							 Content="00:00"/>
+				<ProgressBar Name="TimeBar" Classes="TimeBar"
+										 VerticalAlignment="Center"
+										 Width="400"
+										 Height="8"
+										 Value="0.5"/>
+				<Label Name="TotalTime" 
+							 FontSize="11" 
+							 VerticalAlignment="Center"
+							 Content="00:00"/>
 			</StackPanel>
 		</Grid>
 	</Grid>
