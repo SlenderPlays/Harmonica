@@ -3,6 +3,7 @@
         xmlns:vm="using:Harmonica.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:controls="using:Harmonica.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Harmonica.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -20,6 +21,13 @@
 				RowDefinitions="*,60"
 				ShowGridLines="True">
 		<!-- Player -->
+		<controls:DynamicSlider Minimum="0"
+														Maximum="1"
+														Value="0.5"
+														Grid.Row="0"
+														Grid.Column="0"
+														Height="10"
+														Width="500"/>
 		<!-- LocalFiles -->
 		<!-- PlayerControls -->
 		<Grid Grid.Row="1"  
@@ -67,6 +75,8 @@
 										 Width="400"
 										 Height="8"
 										 Value="0.5"/>
+								
+								
 				<Label Name="TotalTime" 
 							 FontSize="11" 
 							 VerticalAlignment="Center"

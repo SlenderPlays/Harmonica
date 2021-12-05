@@ -35,7 +35,7 @@ namespace Harmonica.Views
 			totalTimeLabel = this.FindControl<Label>("TotalTime");
 
 			timeBar = this.FindControl<ProgressBar>("TimeBar");
-			timeBar.RenderTransform = new RotateTransform(180);
+			//timeBar.RenderTransform = new RotateTransform(180);
 			new Thread(async _ =>
 			{
 				while (Thread.CurrentThread.IsAlive)

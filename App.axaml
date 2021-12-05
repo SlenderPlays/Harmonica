@@ -8,5 +8,6 @@
 
     <Application.Styles>
         <FluentTheme Mode="Light"/>
+			  <StyleInclude Source="/Controls/DynamicSlider.axaml" />
     </Application.Styles>
 </Application>
