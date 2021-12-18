@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Harmonica.Controls;
 using Harmonica.Music;
 using LibVLCSharp.Shared;
 using System;
@@ -15,7 +16,7 @@ namespace Harmonica.Views
 {
 	public partial class MainWindow : Window
 	{
-		private ProgressBar? timeBar;
+		private DynamicSlider? timeBar;
 		private Label? currentTimeLabel;
 		private Label? totalTimeLabel;
 
@@ -34,7 +35,7 @@ namespace Harmonica.Views
 			currentTimeLabel = this.FindControl<Label>("CurrentTime");
 			totalTimeLabel = this.FindControl<Label>("TotalTime");
 
-			timeBar = this.FindControl<ProgressBar>("TimeBar");
+			timeBar = this.FindControl<DynamicSlider>("TimeBar");
 			//timeBar.RenderTransform = new RotateTransform(180);
 			new Thread(async _ =>
 			{
@@ -42,8 +43,11 @@ namespace Harmonica.Views
 				{
 					Func<Task> task = () =>
 					{
-						SetProgress(MusicManager.MusicPlayer.mediaPlayer.Length, 
-									MusicManager.MusicPlayer.mediaPlayer.Time);
+						if (!timeBar.IsPointerOver && MusicManager.MusicPlayer.mediaPlayer.Length > 0)
+						{
+							SetProgress(MusicManager.MusicPlayer.mediaPlayer.Length,
+										MusicManager.MusicPlayer.mediaPlayer.Time);
+						}
 						return Task.CompletedTask;
 					};
 
@@ -54,7 +58,6 @@ namespace Harmonica.Views
 			}).Start();
 		}
 
-		#region PlayerControls
 		#region Buttons
 
 		private bool TryReplaceClass(IControl target, string originalClass, string newClass)
@@ -138,12 +141,11 @@ namespace Harmonica.Views
 
 			double progress =  totalTime == 0 ? 0: (double)currentTime / totalTime;
 			
-			if (timeBar != null) timeBar.Value = 1 - progress;
+			if (timeBar != null) timeBar.Value = progress;
 			if (totalTimeLabel != null) totalTimeLabel.Content = totalString;
 			if (currentTimeLabel != null) currentTimeLabel.Content = currentString;
 		}
 
-		#endregion
 		#endregion
 	}
 }

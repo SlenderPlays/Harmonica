@@ -21,11 +21,6 @@
 				RowDefinitions="*,60"
 				ShowGridLines="True">
 		<!-- Player -->
-		<controls:DynamicSlider 
-			Grid.Row="0"	Grid.Column="0"
-			Minimum="0"		Maximum="1"			Value="0.5"
-			Height="10"		Width="500"
-			CornerRadius="20"/>
 		
 		<!-- LocalFiles -->
 		<!-- PlayerControls -->
@@ -39,7 +34,6 @@
 									Orientation="Horizontal"
 									VerticalAlignment="Center"
 									HorizontalAlignment="Center">
-
 				<Button Classes="ShuffleOffButton" Click="OnShuffleButton_Pressed"
 								Width="32"
 								Height="32"/>
@@ -69,12 +63,11 @@
 							 FontSize="11"
 							 VerticalAlignment="Center"
 							 Content="00:00"/>
-				<ProgressBar Name="TimeBar" Classes="TimeBar"
-										 VerticalAlignment="Center"
-										 Width="400"
-										 Height="8"
-										 Value="0.5"/>
-								
+				<controls:DynamicSlider 
+						Name="TimeBar" Classes="TimeBar" Value="0.5"
+						Height="8"	Width="300"
+						CornerRadius="4"
+						VerticalAlignment="Center"/>
 								
 				<Label Name="TotalTime" 
 							 FontSize="11" 

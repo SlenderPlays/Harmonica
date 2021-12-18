@@ -1,24 +1,29 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:controls="using:Harmonica.Controls">
     <Design.PreviewWith>
         <Border Padding="20">
-					<ProgressBar
+					<controls:DynamicSlider
 								 Classes="TimeBar"
 								 HorizontalAlignment="Center"
 								 VerticalAlignment="Center"
 								 Height="10"
+								 Width="200"
 								 Value="0.5"/>
         </Border>
     </Design.PreviewWith>
 
-	<Style Selector="ProgressBar.TimeBar">
+	<Style Selector="controls|DynamicSlider.TimeBar">
 		
 		<Setter Property="Minimum" Value="0"/>
 		<Setter Property="Maximum" Value="1"/>
-		<Setter Property="CornerRadius" Value="10"/>
-		
-		<Setter Property="Foreground" Value="LightGray"/>
-		<Setter Property="Background">
+		<Setter Property="CornerRadius" Value="20"/>
+		<Setter Property="HandleRadius" Value="20"/>
+		<Setter Property="HandleColor" Value="Black"/>
+
+
+		<Setter Property="Background" Value="LightGray"/>
+		<Setter Property="Foreground">
 			<Setter.Value>
 				<LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%" >
 					<GradientStops>
