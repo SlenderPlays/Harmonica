@@ -4,11 +4,10 @@
   <Design.PreviewWith>
 		<Border Padding="20">
 			<StackPanel Spacing="10">
-				<controls:DynamicSlider Minimum="0"
-																Maximum="1"
-																Value="0.5" 
-																Height="10"
-																Width="210"/>
+				<controls:DynamicSlider 
+					Minimum="0"	Maximum="1"	Value="0.5" 
+					Height="10"	Width="210"
+					CornerRadius="20"/>
 			</StackPanel>
 		</Border>
   </Design.PreviewWith>
@@ -25,10 +24,9 @@
 								BorderBrush="{TemplateBinding BorderBrush}"
 								BorderThickness="{TemplateBinding BorderThickness}"
 								CornerRadius="{TemplateBinding CornerRadius}">
-					<Panel>
-						<Border Name="PART_Indicator"
-										Background="{TemplateBinding Foreground}"/>
-					</Panel>
+					<Border Name="PART_Indicator"
+									Background="{TemplateBinding Foreground}"
+									CornerRadius="{TemplateBinding IndicatorRadius}"/>
 				</Border>
       </ControlTemplate>
     </Setter>

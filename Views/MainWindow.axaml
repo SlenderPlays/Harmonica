@@ -21,13 +21,12 @@
 				RowDefinitions="*,60"
 				ShowGridLines="True">
 		<!-- Player -->
-		<controls:DynamicSlider Minimum="0"
-														Maximum="1"
-														Value="0.5"
-														Grid.Row="0"
-														Grid.Column="0"
-														Height="10"
-														Width="500"/>
+		<controls:DynamicSlider 
+			Grid.Row="0"	Grid.Column="0"
+			Minimum="0"		Maximum="1"			Value="0.5"
+			Height="10"		Width="500"
+			CornerRadius="20"/>
+		
 		<!-- LocalFiles -->
 		<!-- PlayerControls -->
 		<Grid Grid.Row="1"  
