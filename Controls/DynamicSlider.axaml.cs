@@ -12,66 +12,6 @@ namespace Harmonica.Controls
 	{
 		#region Properties
 
-		// Register a new property designed specifically to hold a CornerRadius value.
-		// This isn't used for the sake of having a different property, as much as it is a container.
-		// The main Border (the parent of the _indicator object) has this:
-		//
-		//		CornerRadius="{TemplateBinding CornerRadius}">
-		//
-		// But because the _indicator is put above it (as a child) we get this effect:
-		//
-		//      ┌────────┬─────────────╮
-		//      │        │             │
-		//      └────────┴─────────────╯
-		//
-		// This isn't wanted. If we give the _indicator the same CornerRadius we get something similar
-		//
-		//      ╭────────╮─────────────╮
-		//      │        │             │
-		//      ╰────────╯─────────────╯
-		//
-		// The compromise was to create another property, IndicatorRadiusProperty and put it on the _indicator object
-		//
-		//		CornerRadius="{TemplateBinding IndicatorRadius}
-		//
-
-		/// <summary>
-		/// A container-property which holds the radius of the indicator. It auto-updates when the CornerRadius property is set.
-		/// You shouldn't have to set it manually.
-		/// </summary>
-		public static readonly StyledProperty<CornerRadius> IndicatorRadiusProperty =
-		   AvaloniaProperty.Register<DynamicSlider, CornerRadius>("IndicatorRadius");
-
-		/// <summary>
-		/// A container-property which holds the radius of the indicator. It auto-updates when the CornerRadius property is set.
-		/// You shouldn't have to set it manually.
-		/// </summary>
-		public CornerRadius IndicatorRadius
-		{
-			get { return GetValue(IndicatorRadiusProperty); }
-			private set { SetValue(IndicatorRadiusProperty, value); }
-		}
-
-		// To avoid setting the IndicatorRadiusProperty manually, we highjack the CornerRadiusProperty
-		// and add us as its owner. We also highjack the setter to also set the IndicatorProperty to the same thing,
-		// but the right-hand side (the part inside) is left untouched.
-
-		/// <inheritdoc/>
-		public static new readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-			Border.CornerRadiusProperty.AddOwner<DynamicSlider>();
-
-
-		/// <inheritdoc/>
-		public new CornerRadius CornerRadius
-		{
-			get { return GetValue(CornerRadiusProperty); }
-			set
-			{
-				SetValue(CornerRadiusProperty, value);
-				SetValue(IndicatorRadiusProperty, new CornerRadius(value.TopLeft, 0, 0, value.BottomRight));
-			}
-		}
-
 		public static readonly StyledProperty<int> HandleRadiusProperty =
 		   AvaloniaProperty.Register<DynamicSlider, int>("HandleRadius");
 
@@ -121,38 +61,6 @@ namespace Harmonica.Controls
 		protected override Size ArrangeOverride(Size finalSize)
 		{
 			UpdateIndicator(finalSize);
-			
-			if (_indicatorTrack != null)
-			{
-				_indicatorTrack.ClipToBounds = true;
-				var clippingMask = new GeometryGroup();
-
-				var leftMaxCornerRadius = Math.Max(CornerRadius.TopLeft, CornerRadius.BottomLeft);
-				var rightMaxCornerRadius = Math.Max(CornerRadius.TopRight, CornerRadius.BottomRight);
-
-				var leftCornerOffset = Math.Min(Height / 2, leftMaxCornerRadius);
-				var rightCornerOffset = Math.Min(Height / 2, rightMaxCornerRadius);
-
-				clippingMask.Children?.Add(new RectangleGeometry(new Rect(
-					leftCornerOffset, 0,
-					finalSize.Width - leftCornerOffset - rightCornerOffset, finalSize.Height
-				)));
-
-				PathGeometry leftMask = new PathGeometry();
-				PathFigure figure = new PathFigure();
-				figure.IsClosed = true;
-				PathSegments pathSegments = new PathSegments();
-				pathSegments.Add( new BezierSegment() { Point1 = {0,0}});
-				figure.Segments = pathSegments;
-
-				leftMask.Figures.Add(figure);
-
-				//clippingMask.Children?.Add(leftEllipse);
-				//clippingMask.Children?.Add(rightEllipse);
-
-
-				_indicatorTrack.Clip = clippingMask;
-			}
 
 			return base.ArrangeOverride(finalSize);
 		}

@@ -37,7 +37,7 @@
 					<StackPanel Orientation="Horizontal">
 						<Border Name="PART_Indicator"
 										Background="{TemplateBinding Foreground}"
-										CornerRadius="{TemplateBinding IndicatorRadius}"/>
+										CornerRadius="{TemplateBinding CornerRadius}"/>
 						<!--
 						The margin is set to -9999 because regardless
 						of amount, it goes as far backwards as it can, as in - radius/2
