@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using DynamicData;
 using System;
 
 namespace Harmonica.Controls
@@ -126,13 +127,29 @@ namespace Harmonica.Controls
 				_indicatorTrack.ClipToBounds = true;
 				var clippingMask = new GeometryGroup();
 
+				var leftMaxCornerRadius = Math.Max(CornerRadius.TopLeft, CornerRadius.BottomLeft);
 				var rightMaxCornerRadius = Math.Max(CornerRadius.TopRight, CornerRadius.BottomRight);
 
+				var leftCornerOffset = Math.Min(Height / 2, leftMaxCornerRadius);
 				var rightCornerOffset = Math.Min(Height / 2, rightMaxCornerRadius);
 
 				clippingMask.Children?.Add(new RectangleGeometry(new Rect(
-					0, 0,
-					finalSize.Width - rightCornerOffset, finalSize.Height)));
+					leftCornerOffset, 0,
+					finalSize.Width - leftCornerOffset - rightCornerOffset, finalSize.Height
+				)));
+
+				PathGeometry leftMask = new PathGeometry();
+				PathFigure figure = new PathFigure();
+				figure.IsClosed = true;
+				PathSegments pathSegments = new PathSegments();
+				pathSegments.Add( new BezierSegment() { Point1 = {0,0}});
+				figure.Segments = pathSegments;
+
+				leftMask.Figures.Add(figure);
+
+				//clippingMask.Children?.Add(leftEllipse);
+				//clippingMask.Children?.Add(rightEllipse);
+
 
 				_indicatorTrack.Clip = clippingMask;
 			}
