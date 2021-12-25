@@ -16,7 +16,7 @@ namespace Harmonica
 			AvaloniaXamlLoader.Load(this);
 			if (!Design.IsDesignMode)
 				MusicManager.MusicPlayer.PreparePlay(
-					new Media(MusicManager.LibVLC, "file:///D:/Programming/Atestat/WebServer/songs/imagine_dragons.mp4", FromType.FromLocation)
+					 MusicManager.MediaLocator.GetMedia(MusicManager.LibVLC, "pony_island_soundtrack_mp3/02 - Enter Pony.mp3")
 				);
 		}
 

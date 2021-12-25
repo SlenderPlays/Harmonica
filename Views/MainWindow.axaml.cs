@@ -36,14 +36,15 @@ namespace Harmonica.Views
 			totalTimeLabel = this.FindControl<Label>("TotalTime");
 
 			timeBar = this.FindControl<DynamicSlider>("TimeBar");
-			//timeBar.RenderTransform = new RotateTransform(180);
+			timeBar.OnDragEnded += TimeBar_OnValueChanged;
+
 			new Thread(async _ =>
 			{
 				while (Thread.CurrentThread.IsAlive)
 				{
 					Func<Task> task = () =>
 					{
-						if (!timeBar.IsPointerOver && MusicManager.MusicPlayer.mediaPlayer.Length > 0)
+						if (!timeBar.IsDragging && MusicManager.MusicPlayer.mediaPlayer.Length > 0)
 						{
 							SetProgress(MusicManager.MusicPlayer.mediaPlayer.Length,
 										MusicManager.MusicPlayer.mediaPlayer.Time);
@@ -56,6 +57,23 @@ namespace Harmonica.Views
 					Thread.Sleep(100);
 				}
 			}).Start();
+		}
+
+		private void TimeBar_OnValueChanged(object? sender, double progressPercentage)
+		{
+			var newTime = progressPercentage * (MusicManager.MusicPlayer.mediaPlayer.Length / 1000);
+
+			if (MusicManager.MusicPlayer.mediaPlayer.State == VLCState.Ended)
+			{
+				if (MusicManager.MusicPlayer.mediaPlayer.Media != null)
+				{
+					MusicManager.MusicPlayer.Play(MusicManager.MusicPlayer.mediaPlayer.Media, () => MusicManager.MusicPlayer.Seek((long)newTime));
+				}
+			}
+			else
+			{
+				MusicManager.MusicPlayer.Seek((long)newTime);
+			}
 		}
 
 		#region Buttons

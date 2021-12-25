@@ -29,6 +29,16 @@ namespace Harmonica.Music
 				mediaPlayer.Play();
 			});
 		}
+		public void Play(Media media, Action callback)
+		{
+			media.AddOption(":no-video");
+			ThreadPool.QueueUserWorkItem(async _ => {
+				await media.Parse();
+				mediaPlayer.Media = media;
+				mediaPlayer.Play();
+				callback();
+			});
+		}
 
 		public void PreparePlay(Media media)
 		{
@@ -37,7 +47,7 @@ namespace Harmonica.Music
 				await media.Parse();
 				mediaPlayer.Media = media;
 				mediaPlayer.Play();
-				Pause();
+				Pause();				
 			});
 		}
 

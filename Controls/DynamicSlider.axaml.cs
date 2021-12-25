@@ -12,18 +12,30 @@ namespace Harmonica.Controls
 	{
 		#region Properties
 
+		/// <summary>
+		/// The property which represents the total size of the "drag" handle.
+		/// </summary>
 		public static readonly StyledProperty<int> HandleRadiusProperty =
 		   AvaloniaProperty.Register<DynamicSlider, int>("HandleRadius");
 
+		/// <summary>
+		/// The total size of the "drag" handle
+		/// </summary>
 		public int HandleRadius
 		{
 			get { return GetValue(HandleRadiusProperty); }
 			set { SetValue(HandleRadiusProperty, value); }
 		}
 
+		/// <summary>
+		/// The property which represents the colour of the "drag" handle
+		/// </summary>
 		public static readonly StyledProperty<IBrush> HandleColorProperty =
 		   AvaloniaProperty.Register<DynamicSlider, IBrush>("HandleColor", new SolidColorBrush(new Color(255, 0, 0, 0)));
 
+		/// <summary>
+		/// The colour of the "drag" handle
+		/// </summary>
 		public IBrush HandleColor
 		{
 			get { return GetValue(HandleColorProperty); }
@@ -35,12 +47,21 @@ namespace Harmonica.Controls
 		//public static readonly StyledProperty<Orientation> OrientationProperty =
 		//	AvaloniaProperty.Register<ProgressBar, Orientation>(nameof(Orientation), Orientation.Horizontal);
 
+		public event EventHandler<double>? OnDragEnded;
+		private void InvokeOnDragEnded()
+		{
+			OnDragEnded?.Invoke(this,Value);
+		}
 		#endregion
 
 		private Border? _backgroundTrack;
 		private Border? _indicatorTrack;
 		private Ellipse? _handle;
 		private bool _isDragging = false;
+
+		public bool IsDragging { 
+			get { return _isDragging; } 
+		}
 
 		static DynamicSlider()
 		{
@@ -97,12 +118,12 @@ namespace Harmonica.Controls
 		// This only happens if it has never been clicked on...
 		protected override void OnPointerEnter(Avalonia.Input.PointerEventArgs e)
 		{
-			if(_handle != null) _handle.IsVisible = true;
+			if(_handle != null) _handle.Opacity = 1;
 			base.OnPointerEnter(e);
 		}
 		protected override void OnPointerLeave(Avalonia.Input.PointerEventArgs e)
 		{
-			if (_handle != null) _handle.IsVisible = false;
+			if (_handle != null) _handle.Opacity = 0;
 			base.OnPointerLeave(e);
 		}
 
@@ -124,6 +145,8 @@ namespace Harmonica.Controls
 				Value -= increment;
 				e.Handled = true;
 			}
+
+			InvokeOnDragEnded();
 		}
 
 		private void MouseDown(object? sender, Avalonia.Input.PointerPressedEventArgs e)
@@ -136,6 +159,7 @@ namespace Harmonica.Controls
 		private void MouseUp(object? sender, Avalonia.Input.PointerReleasedEventArgs e)
 		{
 			_isDragging = false;
+			InvokeOnDragEnded();
 			e.Handled = true;
 		}
 

@@ -46,7 +46,7 @@
 										 Width="{TemplateBinding HandleRadius}"
 										 Height="{TemplateBinding HandleRadius}"
 										 Margin="-9999"
-										 IsVisible="False"
+										 Opacity="0"
 										 Fill="{TemplateBinding HandleColor}"/>
 					</StackPanel>
 				</Border>
