@@ -1,6 +1,7 @@
 ﻿using LibVLCSharp.Shared;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
@@ -10,6 +11,7 @@ namespace Harmonica.Music
 	{
 		public MediaPlayer mediaPlayer;
 
+		
 		public float buffer = 0;
 		// This might need an added delay of 1 second or so, if network conditions are bad.
 		public bool CanStartPlaying => buffer == 100;
@@ -52,7 +54,17 @@ namespace Harmonica.Music
 		}
 
 		public void Pause() => mediaPlayer.SetPause(true);
-		public void Unpause() => mediaPlayer.SetPause(false);
+		public void Unpause()
+		{
+			if (mediaPlayer.State == VLCState.Ended && mediaPlayer.Media != null)
+			{
+				Play(mediaPlayer.Media);
+			}
+			else
+			{
+				mediaPlayer.SetPause(false);
+			}
+		}
 
 		public void SetVolume(int volume) => mediaPlayer.Volume = volume;
 

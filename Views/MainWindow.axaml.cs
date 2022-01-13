@@ -19,6 +19,7 @@ namespace Harmonica.Views
 		private DynamicSlider? timeBar;
 		private Label? currentTimeLabel;
 		private Label? totalTimeLabel;
+		private Button? playPauseButton;
 
 		public MainWindow()
 		{
@@ -32,11 +33,18 @@ namespace Harmonica.Views
 		{
 			AvaloniaXamlLoader.Load(this);
 
-			currentTimeLabel = this.FindControl<Label>("CurrentTime");
-			totalTimeLabel = this.FindControl<Label>("TotalTime");
+			this.playPauseButton = this.FindControl<Button>("PlayPauseButton");
+			MusicManager.MusicPlayer.mediaPlayer.EndReached += (s, e) => {
+				// TODO: if repeat
+				SetPlayState(false); 
+			};
 
-			timeBar = this.FindControl<DynamicSlider>("TimeBar");
-			timeBar.OnDragEnded += TimeBar_OnValueChanged;
+
+			this.currentTimeLabel = this.FindControl<Label>("CurrentTime");
+			this.totalTimeLabel = this.FindControl<Label>("TotalTime");
+
+			this.timeBar = this.FindControl<DynamicSlider>("TimeBar");
+			this.timeBar.OnDragEnded += TimeBar_OnValueChanged;
 
 			new Thread(async _ =>
 			{
@@ -44,7 +52,7 @@ namespace Harmonica.Views
 				{
 					Func<Task> task = () =>
 					{
-						if (!timeBar.IsDragging && MusicManager.MusicPlayer.mediaPlayer.Length > 0)
+						if (!this.timeBar.IsDragging && MusicManager.MusicPlayer.mediaPlayer.Length > 0)
 						{
 							SetProgress(MusicManager.MusicPlayer.mediaPlayer.Length,
 										MusicManager.MusicPlayer.mediaPlayer.Time);
@@ -78,29 +86,75 @@ namespace Harmonica.Views
 
 		#region Buttons
 
-		private bool TryReplaceClass(IControl target, string originalClass, string newClass)
+		private void ReplaceClass(IControl target, string originalClass, string newClass)
 		{
 			if (target.Classes.Any(x => x == originalClass))
 			{
 				target.Classes.Remove(originalClass);
 				target.Classes.Add(newClass);
-				return true;
 			}
-			return false;
 		}
 
-		public void OnPlayButton_Pressed(object sender, RoutedEventArgs args)
+		private bool TryReplaceClass(IControl target, string originalClass, string newClass)
+		{
+			bool anyMatch = false;
+			if (target.Classes.Any(x => x == originalClass))
+			{
+				target.Classes.Remove(originalClass);
+				target.Classes.Add(newClass);
+
+				anyMatch = true;
+			}
+
+			return anyMatch;
+		}
+
+		public void TogglePlayState()
+		{
+			if (this.playPauseButton == null) return;
+
+			if (this.playPauseButton.Classes.Contains("PlayButton"))
+			{
+				ReplaceClass(this.playPauseButton, "PlayButton", "PauseButton");
+				MusicManager.MusicPlayer.Unpause();
+			}
+			else if(this.playPauseButton.Classes.Contains("PauseButton"))
+			{
+				ReplaceClass(this.playPauseButton, "PauseButton", "PlayButton");
+				MusicManager.MusicPlayer.Pause();
+			}
+		}
+
+		public void SetPlayState(bool play)
+		{
+			if (playPauseButton == null) return;
+
+			if(play)
+			{
+				ReplaceClass(playPauseButton, "PlayButton", "PauseButton");
+				MusicManager.MusicPlayer.Unpause();
+			}
+			else
+			{
+				ReplaceClass(playPauseButton, "PauseButton", "PlayButton");
+				MusicManager.MusicPlayer.Pause();
+			}
+				
+		}
+
+		private void OnPlayButton_Pressed(object sender, RoutedEventArgs args)
 		{
 			var button = (Button)sender;
 			if (TryReplaceClass(button, "PlayButton", "PauseButton"))
 			{
 				MusicManager.MusicPlayer.Unpause();
 			}
-			else if(TryReplaceClass(button, "PauseButton", "PlayButton"))
+			else if (TryReplaceClass(button, "PauseButton", "PlayButton"))
 			{
 				MusicManager.MusicPlayer.Pause();
 			}
 		}
+
 
 		public void OnShuffleButton_Pressed(object sender, RoutedEventArgs args)
 		{

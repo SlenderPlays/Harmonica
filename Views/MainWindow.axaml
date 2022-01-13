@@ -43,6 +43,7 @@
 								Height="32"/>
 				
 				<Button Classes="PlayButton" Click="OnPlayButton_Pressed"
+								Name="PlayPauseButton"
 								Width="32"
 								Height="32"/>
 
