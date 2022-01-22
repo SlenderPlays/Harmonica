@@ -35,6 +35,7 @@
 									VerticalAlignment="Center"
 									HorizontalAlignment="Center">
 				<Button Classes="ShuffleOffButton" Click="OnShuffleButton_Pressed"
+								Name="ShuffleButton"
 								Width="32"
 								Height="32"/>
 
@@ -52,6 +53,7 @@
 								Height="32"/>
 
 				<Button Classes="RepeatOffButton" Click="OnRepeatButton_Pressed"
+								Name="RepeatButton"
 								Width="32"
 								Height="32"/>
 				
@@ -63,6 +65,8 @@
 				<Label Name="CurrentTime"
 							 FontSize="11"
 							 VerticalAlignment="Center"
+							 MinWidth="48" MaxWidth="48"
+							 HorizontalContentAlignment="Right"
 							 Content="00:00"/>
 				<controls:DynamicSlider 
 						Name="TimeBar" Classes="TimeBar" Value="0.5"
@@ -73,6 +77,8 @@
 				<Label Name="TotalTime" 
 							 FontSize="11" 
 							 VerticalAlignment="Center"
+							 MinWidth="48" MaxWidth="48"
+							 HorizontalContentAlignment="Left"
 							 Content="00:00"/>
 			</StackPanel>
 		</Grid>

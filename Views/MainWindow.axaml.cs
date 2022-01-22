@@ -16,10 +16,12 @@ namespace Harmonica.Views
 {
 	public partial class MainWindow : Window
 	{
+		private PlayerControls playerControls;
+		private MusicPlayer musicPlayer => MusicManager.MusicPlayer;
+
 		private DynamicSlider? timeBar;
 		private Label? currentTimeLabel;
 		private Label? totalTimeLabel;
-		private Button? playPauseButton;
 
 		public MainWindow()
 		{
@@ -33,18 +35,21 @@ namespace Harmonica.Views
 		{
 			AvaloniaXamlLoader.Load(this);
 
-			this.playPauseButton = this.FindControl<Button>("PlayPauseButton");
-			MusicManager.MusicPlayer.mediaPlayer.EndReached += (s, e) => {
-				// TODO: if repeat
-				SetPlayState(false); 
-			};
+			// Initialize Player Controls
+			Button playPauseButton = this.FindControl<Button>("PlayPauseButton");
+			Button shuffleButton = this.FindControl<Button>("ShuffleButton");
+			Button repeatButton = this.FindControl<Button>("RepeatButton");
+			playerControls = new PlayerControls(playPauseButton, shuffleButton, repeatButton);
+
+			// Handle Media Player End
+			musicPlayer.mediaPlayer.EndReached += MusicPlayer_EndReached;
 
 
 			this.currentTimeLabel = this.FindControl<Label>("CurrentTime");
 			this.totalTimeLabel = this.FindControl<Label>("TotalTime");
 
 			this.timeBar = this.FindControl<DynamicSlider>("TimeBar");
-			this.timeBar.OnDragEnded += TimeBar_OnValueChanged;
+			this.timeBar.OnDragEnded += TimeBar_OnTimeSet;
 
 			new Thread(async _ =>
 			{
@@ -52,10 +57,10 @@ namespace Harmonica.Views
 				{
 					Func<Task> task = () =>
 					{
-						if (!this.timeBar.IsDragging && MusicManager.MusicPlayer.mediaPlayer.Length > 0)
+						if (!this.timeBar.IsDragging && musicPlayer.mediaPlayer.Length > 0)
 						{
-							SetProgress(MusicManager.MusicPlayer.mediaPlayer.Length,
-										MusicManager.MusicPlayer.mediaPlayer.Time);
+							UpdateTimeBarText(musicPlayer.mediaPlayer.Length,
+										musicPlayer.mediaPlayer.Time);
 						}
 						return Task.CompletedTask;
 					};
@@ -67,139 +72,87 @@ namespace Harmonica.Views
 			}).Start();
 		}
 
-		private void TimeBar_OnValueChanged(object? sender, double progressPercentage)
+		private void MusicPlayer_EndReached(object? sender, EventArgs e)
 		{
-			var newTime = progressPercentage * (MusicManager.MusicPlayer.mediaPlayer.Length / 1000);
-
-			if (MusicManager.MusicPlayer.mediaPlayer.State == VLCState.Ended)
+			if (playerControls.CurrentRepeatSate == RepeatState.REPEAT_ON)
 			{
-				if (MusicManager.MusicPlayer.mediaPlayer.Media != null)
-				{
-					MusicManager.MusicPlayer.Play(MusicManager.MusicPlayer.mediaPlayer.Media, () => MusicManager.MusicPlayer.Seek((long)newTime));
-				}
+				// TODO: Repeat Queue
+			}
+			else if (playerControls.CurrentRepeatSate == RepeatState.REPEAT_ONE)
+			{
+				// Repeat same song
+				musicPlayer.Unpause();
 			}
 			else
 			{
-				MusicManager.MusicPlayer.Seek((long)newTime);
+				// TODO: next in queue
+				// if queue is empty
+				playerControls.SetPlayState(PlayState.STOPPED);
 			}
 		}
 
 		#region Buttons
 
-		private void ReplaceClass(IControl target, string originalClass, string newClass)
+		private void OnPlayButton_Pressed(object sender, RoutedEventArgs args)
 		{
-			if (target.Classes.Any(x => x == originalClass))
+			playerControls.TogglePlayState();
+
+			if(playerControls.CurrentPlayState == PlayState.PLAYING)
 			{
-				target.Classes.Remove(originalClass);
-				target.Classes.Add(newClass);
-			}
-		}
-
-		private bool TryReplaceClass(IControl target, string originalClass, string newClass)
-		{
-			bool anyMatch = false;
-			if (target.Classes.Any(x => x == originalClass))
-			{
-				target.Classes.Remove(originalClass);
-				target.Classes.Add(newClass);
-
-				anyMatch = true;
-			}
-
-			return anyMatch;
-		}
-
-		public void TogglePlayState()
-		{
-			if (this.playPauseButton == null) return;
-
-			if (this.playPauseButton.Classes.Contains("PlayButton"))
-			{
-				ReplaceClass(this.playPauseButton, "PlayButton", "PauseButton");
-				MusicManager.MusicPlayer.Unpause();
-			}
-			else if(this.playPauseButton.Classes.Contains("PauseButton"))
-			{
-				ReplaceClass(this.playPauseButton, "PauseButton", "PlayButton");
-				MusicManager.MusicPlayer.Pause();
-			}
-		}
-
-		public void SetPlayState(bool play)
-		{
-			if (playPauseButton == null) return;
-
-			if(play)
-			{
-				ReplaceClass(playPauseButton, "PlayButton", "PauseButton");
-				MusicManager.MusicPlayer.Unpause();
+				musicPlayer.Unpause();
 			}
 			else
 			{
-				ReplaceClass(playPauseButton, "PauseButton", "PlayButton");
-				MusicManager.MusicPlayer.Pause();
+				musicPlayer.Pause();
 			}
-				
-		}
 
-		private void OnPlayButton_Pressed(object sender, RoutedEventArgs args)
-		{
-			var button = (Button)sender;
-			if (TryReplaceClass(button, "PlayButton", "PauseButton"))
-			{
-				MusicManager.MusicPlayer.Unpause();
-			}
-			else if (TryReplaceClass(button, "PauseButton", "PlayButton"))
-			{
-				MusicManager.MusicPlayer.Pause();
-			}
 		}
 
 
 		public void OnShuffleButton_Pressed(object sender, RoutedEventArgs args)
 		{
-			var button = (Button)sender;
-			if (TryReplaceClass(button, "ShuffleOffButton", "ShuffleOnButton"))
+			playerControls.ToggleShuffleState();
+
+			if (playerControls.CurrentShuffleState == ShuffleState.SHUFFLE_ON)
 			{
-				// TODO: start shuffle
+				// TODO: Enable Shuffle
 			}
-			else if (TryReplaceClass(button, "ShuffleOnButton", "ShuffleOffButton"))
+			else
 			{
-				// stop shuffle
+				// TODO: Disable Shuffle
 			}
+
+			
 		}
 
 		public void OnRepeatButton_Pressed(object sender, RoutedEventArgs args)
 		{
-			var button = (Button)sender;
-			if (TryReplaceClass(button, "RepeatOffButton", "RepeatOnButton"))
+			playerControls.ToggleRepeatState();
+
+			if(playerControls.CurrentRepeatSate == RepeatState.REPEAT_ON)
 			{
-				// TODO: repeat (all)
+				// TODO: Toggle queue repeat ON
 			}
-			else if (TryReplaceClass(button, "RepeatOnButton", "RepeatOneButton"))
+			else if(playerControls.CurrentRepeatSate == RepeatState.REPEAT_OFF || playerControls.CurrentRepeatSate == RepeatState.REPEAT_ONE)
 			{
-				// repeat (one/same)
-			}
-			else if (TryReplaceClass(button, "RepeatOneButton", "RepeatOffButton"))
-			{
-				// stop repeat
+				// TODO: Toggle queue repeat OFF
 			}
 		}
 
 		public void OnPreviousButton_Pressed(object sender, RoutedEventArgs args)
 		{
-			// TODO: previous
+			// TODO: previous in queue
 		}
 
 		public void OnNextButton_Pressed(object sender, RoutedEventArgs args)
 		{
-			// TODO: next
+			// TODO: next in queue
 		}
 
 		#endregion
-		#region ProgressBar
+		#region TimeBar
 
-		public void SetProgress(long totalTime, long currentTime)
+		public void UpdateTimeBarText(long totalTime, long currentTime)
 		{
 			if (totalTime == -1) totalTime = 0;
 			if (currentTime == -1) currentTime= 0;
@@ -216,6 +169,25 @@ namespace Harmonica.Views
 			if (timeBar != null) timeBar.Value = progress;
 			if (totalTimeLabel != null) totalTimeLabel.Content = totalString;
 			if (currentTimeLabel != null) currentTimeLabel.Content = currentString;
+		}
+
+		private void TimeBar_OnTimeSet(object? sender, double progressPercentage)
+		{
+			var newTime = progressPercentage * (musicPlayer.mediaPlayer.Length / 1000);
+
+			if (musicPlayer.mediaPlayer.State == VLCState.Ended)
+			{
+				if (musicPlayer.mediaPlayer.Media != null)
+				{
+					musicPlayer.Play(musicPlayer.mediaPlayer.Media, () => musicPlayer.Seek((long)newTime));
+				}
+			}
+			else
+			{
+				musicPlayer.Seek((long)newTime);
+			}
+
+			playerControls.SetPlayState(PlayState.PLAYING);
 		}
 
 		#endregion

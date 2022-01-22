@@ -10,7 +10,6 @@ namespace Harmonica.Music
 	class MusicPlayer
 	{
 		public MediaPlayer mediaPlayer;
-
 		
 		public float buffer = 0;
 		// This might need an added delay of 1 second or so, if network conditions are bad.
