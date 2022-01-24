@@ -3,20 +3,37 @@
 				xmlns:controls="using:Harmonica.Controls">
     <Design.PreviewWith>
         <Border Padding="20">
-					<controls:DynamicSlider
+					<StackPanel Orientation="Vertical" Spacing="20">
+
+						<controls:DynamicSlider
 								 Classes="TimeBar"
 								 HorizontalAlignment="Center"
 								 VerticalAlignment="Center"
 								 Height="10"
 								 Width="200"
-								 Value="0.5"/>
+								 Minimum="0" Maximum="1" Value="0.5"/>
+						<controls:DynamicSlider
+								 Classes="VolumeSlider"
+								 HorizontalAlignment="Center"
+								 VerticalAlignment="Center"
+								 Height="10"
+								 Width="200"
+								 Minimum="0" Maximum="1" Value="0.5"/>
+					</StackPanel>
         </Border>
     </Design.PreviewWith>
 
-	<Style Selector="controls|DynamicSlider.TimeBar">
+	<Style Selector="controls|DynamicSlider.VolumeSlider">
+		<Setter Property="CornerRadius" Value="10"/>
+		<Setter Property="HandleRadius" Value="16"/>
+		<Setter Property="HandleColor" Value="Black"/>
 		
-		<Setter Property="Minimum" Value="0"/>
-		<Setter Property="Maximum" Value="1"/>
+		<Setter Property="Background" Value="LightGray"/>
+		<Setter Property="Foreground" Value="Blue"/>
+
+	</Style>
+	
+	<Style Selector="controls|DynamicSlider.TimeBar">
 		<Setter Property="CornerRadius" Value="20"/>
 		<Setter Property="HandleRadius" Value="20"/>
 		<Setter Property="HandleColor" Value="Black"/>

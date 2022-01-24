@@ -16,7 +16,11 @@ namespace Harmonica.Views
 {
 	public partial class MainWindow : Window
 	{
+		#nullable disable
+		// Player Controls is never going to be null after the constructor, but IntelliSense doesn't recognize helper methods
 		private PlayerControls playerControls;
+		#nullable enable
+
 		private MusicPlayer musicPlayer => MusicManager.MusicPlayer;
 
 		private DynamicSlider? timeBar;
@@ -34,7 +38,7 @@ namespace Harmonica.Views
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
-
+			
 			// Initialize Player Controls
 			Button playPauseButton = this.FindControl<Button>("PlayPauseButton");
 			Button shuffleButton = this.FindControl<Button>("ShuffleButton");
@@ -51,25 +55,28 @@ namespace Harmonica.Views
 			this.timeBar = this.FindControl<DynamicSlider>("TimeBar");
 			this.timeBar.OnDragEnded += TimeBar_OnTimeSet;
 
+			this.FindControl<DynamicSlider>("VolumeSlider").OnDragEnded += VolumeSlider_OnVolumeSet;
+
 			new Thread(async _ =>
 			{
 				while (Thread.CurrentThread.IsAlive)
 				{
-					Func<Task> task = () =>
-					{
+					await Dispatcher.UIThread.InvokeAsync(new Action( () => {
 						if (!this.timeBar.IsDragging && musicPlayer.mediaPlayer.Length > 0)
 						{
 							UpdateTimeBarText(musicPlayer.mediaPlayer.Length,
 										musicPlayer.mediaPlayer.Time);
 						}
-						return Task.CompletedTask;
-					};
-
-					await Dispatcher.UIThread.InvokeAsync(task);
+					}));
 
 					Thread.Sleep(100);
 				}
 			}).Start();
+		}
+
+		private void VolumeSlider_OnVolumeSet(object? sender, double e)
+		{
+			musicPlayer.SetVolume((int)e);
 		}
 
 		private void MusicPlayer_EndReached(object? sender, EventArgs e)

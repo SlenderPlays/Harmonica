@@ -27,13 +27,16 @@
 		<Grid Grid.Row="1"  
 					Grid.Column="0"
 					Grid.ColumnSpan="2"
-					RowDefinitions="Auto,*">
+					RowDefinitions="Auto,*"
+					ColumnDefinitions="*,4*,*"
+					ShowGridLines="False">
 			
 			
-			<StackPanel Grid.Row="0"
+			<StackPanel Grid.Row="0" Grid.ColumnSpan="3"
 									Orientation="Horizontal"
 									VerticalAlignment="Center"
 									HorizontalAlignment="Center">
+				
 				<Button Classes="ShuffleOffButton" Click="OnShuffleButton_Pressed"
 								Name="ShuffleButton"
 								Width="32"
@@ -58,7 +61,8 @@
 								Height="32"/>
 				
 			</StackPanel>
-			<StackPanel Grid.Row="1"
+			
+			<StackPanel Grid.Row="1" Grid.ColumnSpan="3"
 									Orientation="Horizontal"
 									HorizontalAlignment="Center"
 									VerticalAlignment="Center">
@@ -72,14 +76,28 @@
 						Name="TimeBar" Classes="TimeBar" Value="0.5"
 						Height="8"	Width="300"
 						CornerRadius="4"
-						VerticalAlignment="Center"/>
-								
+						Minimum="0" Maximum="1"
+						VerticalAlignment="Center"/>						
 				<Label Name="TotalTime" 
 							 FontSize="11" 
 							 VerticalAlignment="Center"
 							 MinWidth="48" MaxWidth="48"
 							 HorizontalContentAlignment="Left"
 							 Content="00:00"/>
+			</StackPanel>
+
+			<StackPanel Grid.Column="2" Grid.RowSpan="2"
+									Orientation="Horizontal"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center">
+				<Image Source="/Assets/avalonia-logo.ico"
+							 Height="24" Width="24"/>
+				<controls:DynamicSlider
+					Name="VolumeSlider" Classes="VolumeSlider"
+					Grid.Column="0" Grid.Row="0"
+					Width="90" Height="8"
+					Minimum="0" Maximum="100" Value="50"/>
+
 			</StackPanel>
 		</Grid>
 	</Grid>
