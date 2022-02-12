@@ -8,10 +8,11 @@ namespace Harmonica.Music
 {
 	class MediaLocator
 	{
-		private string musicPath;
+		public string musicPath;
 		private FileSystemWatcher watcher;
 
 		public SongFolder rootFolder;
+		public event Action? rootFolderChanged;
 
 		public MediaLocator(string musicPath)
 		{
@@ -94,6 +95,7 @@ namespace Harmonica.Music
 			////  that can be de-amiguated here? or somewhere else?
 
 			rootFolder = ScanMusicFolder(musicPath);
+			rootFolderChanged?.Invoke();
 		}
 
 	}

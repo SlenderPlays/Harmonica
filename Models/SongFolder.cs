@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Harmonica.Models
 {
-	class SongFolder
+	public class SongFolder
 	{
 		public SongFolder(string path)
 		{

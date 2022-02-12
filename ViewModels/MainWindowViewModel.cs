@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Harmonica.Models;
 using Harmonica.Music;
 using LibVLCSharp.Shared;
 using ReactiveUI;
@@ -14,21 +15,19 @@ namespace Harmonica.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
-		private string _buffering = "Not Initialized";
-		public string Buffering
+		public SongFolder RootFolder
 		{
-			get => _buffering;
-			private set => this.RaiseAndSetIfChanged(ref _buffering, value);
+			get => MusicManager.MediaLocator.rootFolder;
 		}
 
 		public MainWindowViewModel()
 		{
-			MusicManager.MusicPlayer.mediaPlayer.Buffering += MediaPlayer_Buffering;
+			MusicManager.MediaLocator.rootFolderChanged += MediaLocator_rootFolderChanged;	
 		}
 
-		private void MediaPlayer_Buffering(object? sender, MediaPlayerBufferingEventArgs e)
+		private void MediaLocator_rootFolderChanged()
 		{
-			Buffering = $"Buffering: {e.Cache}%";
+			this.RaisePropertyChanged(nameof(RootFolder));
 		}
 	}
 }

@@ -15,6 +15,7 @@
 
 	<Window.Styles>
 		<StyleInclude Source="/Styles/PlayerControls.axaml"/>
+		<StyleInclude Source="/Styles/MusicExplorer.axaml"/>
 	</Window.Styles>
 	
 	<Grid ColumnDefinitions="*,Auto"
@@ -23,6 +24,13 @@
 		<!-- Player -->
 		
 		<!-- LocalFiles -->
+		<ItemsControl Grid.Row="0" Grid.Column="1" Classes="MusicExplorer" Items="{Binding RootFolder.Songs}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Label Content="{Binding Title}"></Label>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
 		<!-- PlayerControls -->
 		<Grid Grid.Row="1"  
 					Grid.Column="0"
