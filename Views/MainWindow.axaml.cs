@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Harmonica.Controls;
+using Harmonica.Models;
 using Harmonica.Music;
 using LibVLCSharp.Shared;
 using System;
@@ -22,6 +23,7 @@ namespace Harmonica.Views
 		#nullable enable
 
 		private MusicPlayer musicPlayer => MusicManager.MusicPlayer;
+		private MediaLocator mediaLocator => MusicManager.MediaLocator;
 
 		private DynamicSlider? timeBar;
 		private Label? currentTimeLabel;
@@ -48,7 +50,7 @@ namespace Harmonica.Views
 			// Handle Media Player End
 			musicPlayer.mediaPlayer.EndReached += MusicPlayer_EndReached;
 
-
+			// Handle Time Bar
 			this.currentTimeLabel = this.FindControl<Label>("CurrentTime");
 			this.totalTimeLabel = this.FindControl<Label>("TotalTime");
 
@@ -72,6 +74,37 @@ namespace Harmonica.Views
 					Thread.Sleep(100);
 				}
 			}).Start();
+
+			// Populate Local Song Explorer
+			StackPanel? SongExplorer = this.FindControl<StackPanel>("SongExplorer");
+			if(SongExplorer != null)
+			{
+				PopulateSongFolder(SongExplorer, mediaLocator.rootFolder);
+			}
+
+		}
+
+		private void PopulateSongFolder(StackPanel parentControl, SongFolder rootFolder)
+		{
+			foreach(SongFolder songFolder in rootFolder.SongFolders)
+			{
+				SongFolderControl songFolderControl = new SongFolderControl();
+				songFolderControl.Title = songFolder.Name;
+				songFolderControl.Expanded = false;
+
+				StackPanel songFolderContent = new StackPanel();
+				songFolderControl.Content = songFolderContent;
+
+				parentControl.Children.Add(songFolderControl);
+				PopulateSongFolder(songFolderContent, songFolder);
+			}
+
+			foreach(Song song in rootFolder.Songs)
+			{
+				SongControl songControl = new SongControl(song);
+
+				parentControl.Children.Add(songControl);
+			}
 		}
 
 		private void VolumeSlider_OnVolumeSet(object? sender, double e)

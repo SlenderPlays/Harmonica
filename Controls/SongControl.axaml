@@ -1,0 +1,36 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Harmonica.Controls">
+  <Design.PreviewWith>
+		<Border Padding="20">
+			<controls:SongControl />
+		</Border>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|SongControl">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+				<Border Margin="10" Padding="10" Background="White" CornerRadius="10" BorderBrush="Black" BorderThickness="1" BoxShadow="4 4 10 0 Gray">
+					<Grid ColumnDefinitions="55, *, *, *, 80"
+								ShowGridLines="False">
+						<Image Name="Thumbnail"
+									 Source="/Assets/avalonia-logo.ico"
+									 Width="50" Height="50"
+									 Grid.Column="0"/>
+						<StackPanel Grid.Column="1" Margin="20 0" VerticalAlignment="Center">
+							<Label Name="TitleLabel" FontSize="12">Title</Label>
+							<Label Name="AuthorsLabel" FontSize="12">by</Label>
+						</StackPanel>
+						<Label Name="AlbumLabel" FontSize="12" Grid.Column="2" Margin="20 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Album</Label>
+						<Label Name="DurationLabel" FontSize="12" Grid.Column="3" Margin="20 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Duration</Label>
+						<StackPanel Grid.Column="4" HorizontalAlignment="Right">
+							<Button Name="PlayButton" FontSize="12" Width="60" HorizontalContentAlignment="Center">Play</Button>
+							<Button Name="QueueButton" FontSize="12" Width="60" HorizontalContentAlignment="Center">Queue</Button>
+						</StackPanel>
+					</Grid>
+				</Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

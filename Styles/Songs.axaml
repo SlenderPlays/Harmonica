@@ -1,0 +1,41 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+		
+    <Design.PreviewWith>
+        <StackPanel Margin="20">
+					<Expander Classes="SongFolder" Header="Test" Width="400" IsExpanded="True">
+						<StackPanel>
+							<Label>Song1</Label>
+							<Label>Song2</Label>
+							<Label>Song3</Label>
+							<Label>Song4</Label>
+						</StackPanel>
+					</Expander>
+
+					<Expander Header="Test" Width="500" IsExpanded="True">
+						<StackPanel>
+							<Border Padding="10" Background="White" CornerRadius="10" BorderBrush="Black" BorderThickness="1" BoxShadow="4 4 10 0 Gray">
+								<Grid Width="450"
+											ColumnDefinitions="Auto, *, *, *, 80"
+											ShowGridLines="True">
+									<Image Source="/Assets/avalonia-logo.ico" 
+												 Width="50" Height="50"
+												 Grid.Column="0"/>
+									<StackPanel Grid.Column="1" VerticalAlignment="Center">
+										<Label>Title</Label>
+										<Label>by</Label>
+									</StackPanel>
+									<Label Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Album</Label>
+									<Label Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Duration</Label>
+									<StackPanel Grid.Column="4" HorizontalAlignment="Right">
+										<Button Width="60" HorizontalContentAlignment="Center">Play</Button>
+										<Button Width="60" HorizontalContentAlignment="Center">Queue</Button>
+									</StackPanel>
+								</Grid>
+							</Border>
+						</StackPanel>
+					</Expander>
+        </StackPanel>
+    </Design.PreviewWith>
+
+</Styles>

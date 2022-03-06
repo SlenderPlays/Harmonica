@@ -88,6 +88,20 @@ namespace Harmonica.Music
 			return new Media(libvlc, songUri, FromType.FromLocation);
 		}
 
+		public Media GetMediaAbsolute(LibVLC libvlc, string absoluteSongPath)
+		{
+			string songUri = new Uri(absoluteSongPath).AbsoluteUri;
+
+			// If we have a Linux path, simply yank out "//C:/" from the URI
+			// Example Windows URI: file:///C:/MySongs/song.mp3
+			// Example (Wrong) Linux URI: file:///C:/home/user/songs/song.mp3
+			// Example Linux URI: file:/home/user/songs/song.mp3
+			if (musicPath.StartsWith('/'))
+				songUri = songUri.Replace("//C:/", "");
+
+			return new Media(libvlc, songUri, FromType.FromLocation);
+		}
+
 		private void FSW_Event(object sender, FileSystemEventArgs e) {
 			// TODO: what to do with the old music, especially if it is currently playing, or if a playlist already exists?
 			// IDEAS:

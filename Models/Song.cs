@@ -33,7 +33,8 @@ namespace Harmonica.Models
 			// Media media = MusicManager.MediaLocator.GetMedia(MusicManager.LibVLC, relativePath);
 			// Duration = TimeSpan.FromMilliseconds(media.Duration);
 			// media.Dispose();
-
+			
+			Duration = tagFile.Properties.Duration;
 			if (tagFile.Tag.Pictures.Length > 0)
 			{
 				MemoryStream ms = new MemoryStream(tagFile.Tag.Pictures[0].Data.Data);
@@ -48,10 +49,12 @@ namespace Harmonica.Models
 		public const string DefaultAlbum = "No Album";
 
 		public string FilePath { get; private set; }
+		
 		public string Title { get; set; } = DefaultTitle;
 		public string[] Authors { get; set; } = { DefaultAuthor };
 		public string Album { get; set; } = DefaultAlbum;
-		// public TimeSpan Duration { get; set; } = new TimeSpan(0, 0, 0);
+		
+		public TimeSpan Duration { get; set; } = new TimeSpan(0, 0, 0);
 		public Avalonia.Media.Imaging.Bitmap? Thumbnail { get; set; }
 
 		public Song WithTitle(string? title)

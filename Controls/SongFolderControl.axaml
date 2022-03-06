@@ -1,0 +1,23 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Harmonica.Controls">
+  <Design.PreviewWith>
+		<controls:SongFolderControl Title="Test Song Folder" Width="500" Expanded="True">
+			<StackPanel>
+			  <Label>Test</Label>
+				<Label>Test2</Label>
+			</StackPanel>
+		</controls:SongFolderControl>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|SongFolderControl">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+				<Expander Header="{TemplateBinding Title}" Width="{TemplateBinding Width}" IsExpanded="{TemplateBinding Expanded}">
+				  <ContentPresenter Content="{TemplateBinding Content}"/>
+				</Expander>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>
