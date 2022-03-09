@@ -24,7 +24,7 @@
 						</StackPanel>
 						<Label Name="AlbumLabel" FontSize="12" Grid.Column="2" Margin="20 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Album</Label>
 						<Label Name="DurationLabel" FontSize="12" Grid.Column="3" Margin="20 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Duration</Label>
-						<StackPanel Grid.Column="4" HorizontalAlignment="Right">
+						<StackPanel Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center">
 							<Button Name="PlayButton" FontSize="12" Width="60" HorizontalContentAlignment="Center">Play</Button>
 							<Button Name="QueueButton" FontSize="12" Width="60" HorizontalContentAlignment="Center">Queue</Button>
 						</StackPanel>

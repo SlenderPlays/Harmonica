@@ -11,5 +11,6 @@
 			  <StyleInclude Source="/Controls/DynamicSlider.axaml" />
 			  <StyleInclude Source="/Controls/SongFolderControl.axaml" />
 			  <StyleInclude Source="/Controls/SongControl.axaml" />
+			  <StyleInclude Source="/Controls/QueuedSong.axaml" />
     </Application.Styles>
 </Application>

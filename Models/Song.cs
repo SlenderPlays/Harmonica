@@ -14,7 +14,6 @@ namespace Harmonica.Models
 		{
 			this.FilePath = path;
 
-			// TODO: deal with more tags
 			var tagFile = TagLib.File.Create(path);
 
 			if (tagFile.Tag.Title != null)

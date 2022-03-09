@@ -22,7 +22,26 @@
 				RowDefinitions="*,60"
 				ShowGridLines="False">
 		<!-- Player -->
+
+		<Image Grid.Row="0" Grid.Column="0" Source="/Assets/avalonia-logo.ico"/>
 		
+		<Border Name="QueueHolder" Grid.Row="0" Grid.Column="0" 
+						Background="#E2E2E2" Margin="20 20 20 0"
+						BorderBrush="Gray" BorderThickness="2 2 2 0"
+						CornerRadius="10 10 0 0" IsVisible="False">
+			
+			
+			
+			<ScrollViewer>
+				<StackPanel>
+				<StackPanel Name="QueueList">
+					
+				</StackPanel>
+				<Separator Name="Separator" Height="2" Background="Gray" CornerRadius="10" Margin="30 0"/>
+				<Label Name="EOQLabel" Foreground="Gray" HorizontalContentAlignment="Center">End of Queue</Label>
+				</StackPanel>
+			</ScrollViewer>
+		</Border>
 		<!-- LocalFiles -->
 		<Border Grid.Row="0" Grid.Column="1" Background="#F2F2F2" Padding="5" BorderBrush="Gray" BorderThickness="1" >
 			<ScrollViewer>
@@ -36,7 +55,13 @@
 		<Grid RowDefinitions="Auto,*"
 					ColumnDefinitions="*,4*,*"
 					ShowGridLines="False">
-			
+			<StackPanel Grid.Column="0" Grid.RowSpan="2"
+									Orientation="Horizontal"
+									VerticalAlignment="Top"
+									HorizontalAlignment="Left"
+									Margin="10 0 0 0">
+				<Button Width="24" Height="24" Click="OnQueueButton_Pressed"/>
+			</StackPanel>
 			
 			<StackPanel Grid.Row="0" Grid.ColumnSpan="3"
 									Orientation="Horizontal"

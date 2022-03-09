@@ -3,12 +3,14 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using Harmonica.Controls;
 using Harmonica.Models;
 using Harmonica.Music;
 using LibVLCSharp.Shared;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +31,15 @@ namespace Harmonica.Views
 		private Label? currentTimeLabel;
 		private Label? totalTimeLabel;
 
+		private Border? QueueHolder;
+
+		private StackPanel? QueueList;
+
+		private Separator? QueueSeparator;
+		private Label? EOQLabel;
+		
+		private StackPanel? SongExplorer;
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -40,7 +51,7 @@ namespace Harmonica.Views
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
-			
+
 			// Initialize Player Controls
 			Button playPauseButton = this.FindControl<Button>("PlayPauseButton");
 			Button shuffleButton = this.FindControl<Button>("ShuffleButton");
@@ -63,7 +74,8 @@ namespace Harmonica.Views
 			{
 				while (Thread.CurrentThread.IsAlive)
 				{
-					await Dispatcher.UIThread.InvokeAsync(new Action( () => {
+					await Dispatcher.UIThread.InvokeAsync(new Action(() =>
+					{
 						if (!this.timeBar.IsDragging && musicPlayer.mediaPlayer.Length > 0)
 						{
 							UpdateTimeBarText(musicPlayer.mediaPlayer.Length,
@@ -75,13 +87,56 @@ namespace Harmonica.Views
 				}
 			}).Start();
 
-			// Populate Local Song Explorer
-			StackPanel? SongExplorer = this.FindControl<StackPanel>("SongExplorer");
-			if(SongExplorer != null)
+			// Populate
+
+			QueueHolder = this.FindControl<Border>("QueueHolder");
+			QueueList = this.FindControl<StackPanel>("QueueList");
+
+			QueueSeparator = this.FindControl<Separator>("Separator");
+			EOQLabel = this.FindControl<Label>("EOQLabel");
+
+			SongExplorer = this.FindControl<StackPanel>("SongExplorer");
+
+			PopulateSongExplorer();
+			PopulateQueue();
+			MusicManager.Instance.SongQueue.QueueChanged += () => Dispatcher.UIThread.InvokeAsync(PopulateQueue);
+
+		}
+
+		public void PopulateQueue()
+		{
+			if (QueueList != null)
 			{
-				PopulateSongFolder(SongExplorer, mediaLocator.rootFolder);
+				QueueList.Children.Clear();
+				foreach (Song song in MusicManager.Instance.SongQueue.ToList())
+				{
+					QueuedSong newControl = new QueuedSong(song);
+					QueueList.Children.Add(newControl);
+				}
 			}
 
+			if (EOQLabel != null && QueueSeparator != null)
+			{
+				if (MusicManager.Instance.SongQueue.Empty())
+				{
+					EOQLabel.Content = "Queue Is Empty";
+					QueueSeparator.IsVisible = false;
+				}
+				else
+				{
+					EOQLabel.Content = "End Of Queue";
+					QueueSeparator.IsVisible = true;
+				}
+			}
+		}
+
+		public void PopulateSongExplorer()
+		{
+			if (SongExplorer != null)
+			{
+				SongExplorer.Children.Clear();
+				PopulateSongFolder(SongExplorer, mediaLocator.rootFolder);
+			}
 		}
 
 		private void PopulateSongFolder(StackPanel parentControl, SongFolder rootFolder)
@@ -116,7 +171,13 @@ namespace Harmonica.Views
 		{
 			if (playerControls.CurrentRepeatSate == RepeatState.REPEAT_ON)
 			{
-				// TODO: Repeat Queue
+				// Repeat Queue
+				Song s = GetNextFromQueue();
+
+				MusicManager.Instance.SongQueue.Enqueue(s);
+
+				musicPlayer.Play(mediaLocator.GetMediaAbsolute(MusicManager.LibVLC, s.FilePath));
+
 			}
 			else if (playerControls.CurrentRepeatSate == RepeatState.REPEAT_ONE)
 			{
@@ -125,16 +186,39 @@ namespace Harmonica.Views
 			}
 			else
 			{
-				// TODO: next in queue
-				// if queue is empty
-				playerControls.SetPlayState(PlayState.STOPPED);
+				// Next in Queue
+				if (MusicManager.Instance.SongQueue.Empty())
+				{
+					playerControls.SetPlayState(PlayState.STOPPED);
+				}
+				else
+				{
+					Song s = GetNextFromQueue();
+					musicPlayer.Play(mediaLocator.GetMediaAbsolute(MusicManager.LibVLC, s.FilePath));
+				}
 			}
+		}
+
+		private Song GetNextFromQueue()
+		{
+			Song s;
+			if (playerControls.CurrentShuffleState == ShuffleState.SHUFFLE_OFF)
+			{
+				s = MusicManager.Instance.SongQueue.Dequeue();
+			}
+			else
+			{
+				s = MusicManager.Instance.SongQueue.DequeueRandom();
+			}
+
+			return s;
 		}
 
 		#region Buttons
 
 		private void OnPlayButton_Pressed(object sender, RoutedEventArgs args)
 		{
+			// TODO: get next item from queue if item is done playing, and the queue is not empty
 			playerControls.TogglePlayState();
 
 			if(playerControls.CurrentPlayState == PlayState.PLAYING)
@@ -152,41 +236,30 @@ namespace Harmonica.Views
 		public void OnShuffleButton_Pressed(object sender, RoutedEventArgs args)
 		{
 			playerControls.ToggleShuffleState();
-
-			if (playerControls.CurrentShuffleState == ShuffleState.SHUFFLE_ON)
-			{
-				// TODO: Enable Shuffle
-			}
-			else
-			{
-				// TODO: Disable Shuffle
-			}
-
-			
 		}
 
 		public void OnRepeatButton_Pressed(object sender, RoutedEventArgs args)
 		{
 			playerControls.ToggleRepeatState();
-
-			if(playerControls.CurrentRepeatSate == RepeatState.REPEAT_ON)
-			{
-				// TODO: Toggle queue repeat ON
-			}
-			else if(playerControls.CurrentRepeatSate == RepeatState.REPEAT_OFF || playerControls.CurrentRepeatSate == RepeatState.REPEAT_ONE)
-			{
-				// TODO: Toggle queue repeat OFF
-			}
 		}
 
 		public void OnPreviousButton_Pressed(object sender, RoutedEventArgs args)
 		{
-			// TODO: previous in queue
+			// Can't be arsed to make a "previous" queue, so you get to play this song back from the start.
+			musicPlayer.Seek(0);
 		}
 
 		public void OnNextButton_Pressed(object sender, RoutedEventArgs args)
 		{
-			// TODO: next in queue
+			musicPlayer.Unpause();
+			musicPlayer.EndTrack();
+		}
+
+		public void OnQueueButton_Pressed(object sender, RoutedEventArgs args)
+		{
+			if (QueueHolder == null) return;
+
+			QueueHolder.IsVisible = !QueueHolder.IsVisible;
 		}
 
 		#endregion
@@ -197,10 +270,6 @@ namespace Harmonica.Views
 			if (totalTime == -1) totalTime = 0;
 			if (currentTime == -1) currentTime= 0;
 
-			// TODO: label changes size when text changes... probably needs padding or smth
-			// TODO: make corner radius of progress bar only on the corners, and not on the inside
-
-			// TODO: make progress bar actually a slider
 			string totalString = TimeSpan.FromMilliseconds(totalTime).ToString("mm\\:ss");
 			string currentString = TimeSpan.FromMilliseconds(currentTime).ToString("mm\\:ss");
 

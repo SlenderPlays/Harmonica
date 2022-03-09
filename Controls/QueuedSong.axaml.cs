@@ -3,12 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Harmonica.Models;
 using Harmonica.Music;
-using LibVLCSharp.Shared;
 using System;
 
 namespace Harmonica.Controls
 {
-	public class SongControl : TemplatedControl
+	public class QueuedSong : TemplatedControl
 	{
 		public Song? LinkedSong { get; set; }
 
@@ -16,10 +15,9 @@ namespace Harmonica.Controls
 		private Image Thumbnail;
 		private Label TitleLable;
 		private Label AuthorsLabel;
-		private Label AlbumLabel;
 		private Label DurationLevel;
-		private Button PlayButton;
-		private Button QueueButton;
+		private Button UpButton;
+		private Button DownButton;
 #nullable enable
 
 		public void UpdateUI()
@@ -27,17 +25,16 @@ namespace Harmonica.Controls
 			if (LinkedSong == null) return;
 
 			Thumbnail.Source = LinkedSong.Thumbnail;
-			TitleLable.Content = LinkedSong.Title;
-			AlbumLabel.Content = LinkedSong.Album;
+			TitleLable.Content = LinkedSong.Title;			
 			DurationLevel.Content = LinkedSong.Duration.ToString("mm\\:ss");
 			AuthorsLabel.Content = "by " + String.Join(", ", LinkedSong.Authors);
 		}
 
-		public SongControl()
+		public QueuedSong()
 		{
 		}
 
-		public SongControl(Song song) : this()
+		public QueuedSong(Song song) : this()
 		{
 			LinkedSong = song;
 		}
@@ -47,29 +44,28 @@ namespace Harmonica.Controls
 			Thumbnail = e.NameScope.Get<Image>("Thumbnail");
 			TitleLable = e.NameScope.Get<Label>("TitleLabel");
 			AuthorsLabel = e.NameScope.Get<Label>("AuthorsLabel");
-			AlbumLabel = e.NameScope.Get<Label>("AlbumLabel");
 			DurationLevel = e.NameScope.Get<Label>("DurationLabel");
-			PlayButton = e.NameScope.Get<Button>("PlayButton");
-			QueueButton = e.NameScope.Get<Button>("QueueButton");
+			UpButton = e.NameScope.Get<Button>("UpButton");
+			DownButton = e.NameScope.Get<Button>("DownButton");
 
-			PlayButton.Click += PlayButton_Clicked;
-			QueueButton.Click += QueueButton_Clicked;
+			UpButton.Click += UpButton_Clicked;
+			DownButton.Click += DownButton_Clicked;
 
 			UpdateUI();
 		}
 
-		private void QueueButton_Clicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+		private void DownButton_Clicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
 		{
 			if (LinkedSong == null) return;
 
-			MusicManager.Instance.SongQueue.Enqueue(LinkedSong);
+			MusicManager.Instance.SongQueue.MoveDown(LinkedSong);
 		}
 
-		private void PlayButton_Clicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+		private void UpButton_Clicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
 		{
 			if (LinkedSong == null) return;
 
-			MusicManager.MusicPlayer.Play(MusicManager.MediaLocator.GetMediaAbsolute(MusicManager.LibVLC, LinkedSong.FilePath));
+			MusicManager.Instance.SongQueue.MoveUp(LinkedSong);
 		}
 	}
 }

@@ -76,9 +76,15 @@ namespace Harmonica.Music
 			mediaPlayer.SeekTo(time);
 		}
 
+		public void EndTrack()
+		{
+			if (mediaPlayer.Media == null) return;
+
+			mediaPlayer.SeekTo( TimeSpan.FromMilliseconds(mediaPlayer.Media.Duration - 10));
+		}
+
 		public void SeekForwards (long seconds) => Seek(mediaPlayer.Time / 1000 + seconds);
 		public void SeekBackwards(long seconds) => Seek(mediaPlayer.Time / 1000 - seconds);
-		// TODO: Next, Back, Shuffle, Repeat
 
 		private void MediaPlayer_Buffering(object? sender, MediaPlayerBufferingEventArgs e) => buffer = e.Cache;
 

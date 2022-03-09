@@ -1,4 +1,5 @@
-﻿using LibVLCSharp.Shared;
+﻿using Harmonica.Models;
+using LibVLCSharp.Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,6 +41,8 @@ namespace Harmonica.Music
 		private MediaLocator mediaLocator;
 
 		public string MusicPath { get; private set; }
+
+		public FlexibleQueue<Song> SongQueue { get; private set; } = new FlexibleQueue<Song>();
 
 		private MusicManager()
 		{
