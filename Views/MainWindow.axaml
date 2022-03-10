@@ -23,8 +23,15 @@
 				ShowGridLines="False">
 		<!-- Player -->
 
-		<Image Grid.Row="0" Grid.Column="0" Source="/Assets/avalonia-logo.ico"/>
-		
+		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="10">
+			<Label Name="BackgroundTitle" 
+						 FontWeight="ExtraBlack" FontSize="22"
+						 HorizontalAlignment="Center"></Label>
+			<Label Name="BackgroundAuthors"
+						 FontWeight="ExtraBlack" FontSize="18"
+						 HorizontalAlignment="Center"></Label>
+			<Image Name="BackgroundImage"/>
+		</StackPanel>
 		<Border Name="QueueHolder" Grid.Row="0" Grid.Column="0" 
 						Background="#E2E2E2" Margin="20 20 20 0"
 						BorderBrush="Gray" BorderThickness="2 2 2 0"

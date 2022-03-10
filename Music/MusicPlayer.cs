@@ -29,6 +29,7 @@ namespace Harmonica.Music
 				mediaPlayer.Media = media;
 				mediaPlayer.Play();
 			});
+
 		}
 		public void Play(Media media, Action callback)
 		{

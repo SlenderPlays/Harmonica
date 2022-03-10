@@ -32,13 +32,16 @@ namespace Harmonica.Views
 		private Label? totalTimeLabel;
 
 		private Border? QueueHolder;
-
 		private StackPanel? QueueList;
-
 		private Separator? QueueSeparator;
 		private Label? EOQLabel;
 		
 		private StackPanel? SongExplorer;
+
+		private Image? BackgroundImage;
+		private Label? BackgroundTitle;
+		private Label? BackgroundAuthors;
+
 
 		public MainWindow()
 		{
@@ -101,6 +104,9 @@ namespace Harmonica.Views
 			PopulateQueue();
 			MusicManager.Instance.SongQueue.QueueChanged += () => Dispatcher.UIThread.InvokeAsync(PopulateQueue);
 
+			BackgroundAuthors = this.FindControl<Label>("BackgroundAuthors");
+			BackgroundTitle = this.FindControl<Label>("BackgroundTitle");
+			BackgroundImage = this.FindControl<Image>("BackgroundImage");
 		}
 
 		public void PopulateQueue()
@@ -211,7 +217,20 @@ namespace Harmonica.Views
 				s = MusicManager.Instance.SongQueue.DequeueRandom();
 			}
 
+			Dispatcher.UIThread.InvokeAsync(() => UpdateBagkround(s));
+
 			return s;
+		}
+
+		private void UpdateBagkround(Song s)
+		{
+			// TODO: Update background if user hits play, instead of queue
+			if (BackgroundImage != null)
+				BackgroundImage.Source = s.Thumbnail;
+			if (BackgroundTitle != null)
+				BackgroundTitle.Content = s.Title;
+			if (BackgroundAuthors != null)
+				BackgroundAuthors.Content = String.Join(", ", s.Authors);
 		}
 
 		#region Buttons
