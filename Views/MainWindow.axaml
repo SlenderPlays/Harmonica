@@ -6,7 +6,7 @@
 				xmlns:controls="using:Harmonica.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Harmonica.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/icon.ico"
         Title="Harmonica">
 
     <Design.DataContext>

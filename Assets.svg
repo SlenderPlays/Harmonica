@@ -31,14 +31,14 @@
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:zoom="8.925"
-     inkscape:cx="1782.577"
-     inkscape:cy="372.04482"
-     inkscape:window-width="1284"
-     inkscape:window-height="1040"
-     inkscape:window-x="460"
-     inkscape:window-y="16"
-     inkscape:window-maximized="0"
+     inkscape:zoom="2.23125"
+     inkscape:cx="906.89076"
+     inkscape:cy="673.16527"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      inkscape:current-layer="layer1">
     <sodipodi:guide
        position="1396.5266,929.41176"
@@ -963,6 +963,29 @@
        inkscape:export-filename="D:\Programming\Atestat\Harmonica\Assets\Queue.png"
        inkscape:export-xdpi="41.262215"
        inkscape:export-ydpi="41.262215" />
+    <circle
+       style="fill:#4d4d4d;fill-rule:evenodd"
+       id="path31-2-9"
+       cx="1043.9036"
+       cy="662.97693"
+       r="59.159664"
+       inkscape:export-filename="D:\Programming\Atestat\Harmonica\Assets\icon.png"
+       inkscape:export-xdpi="207.70908"
+       inkscape:export-ydpi="207.70908" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:114.175px;line-height:1.25;font-family:Algerian;fill:#43ef42;fill-opacity:1;stroke:none;stroke-width:2.85438;-inkscape-font-specification:'Algerian Extra-Condensed';font-stretch:extra-condensed;font-variant:normal"
+       x="1007.8615"
+       y="701.02606"
+       id="text3271"
+       inkscape:export-filename="D:\Programming\Atestat\Harmonica\Assets\icon.png"
+       inkscape:export-xdpi="207.70908"
+       inkscape:export-ydpi="207.70908"><tspan
+         sodipodi:role="line"
+         id="tspan3269"
+         x="1007.8615"
+         y="701.02606"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:extra-condensed;font-family:Algerian;-inkscape-font-specification:'Algerian Extra-Condensed';fill:#43ef42;fill-opacity:1;stroke-width:2.85438">H</tspan></text>
   </g>
   <metadata
      id="metadata92299">
