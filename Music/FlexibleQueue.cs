@@ -8,14 +8,12 @@ namespace Harmonica.Music
 	{
 		private readonly List<T> _container = new List<T>();
 		private int _size => _container.Count;
+		public int Size => _size; // Don't ask why, I'm on a time crunch
 
-		public event Action QueueChanged;
+		public event Action? QueueChanged;
 		private void InvokeQueueChanged()
 		{
-			if(QueueChanged != null)
-			{
-				QueueChanged.Invoke();
-			}
+			QueueChanged?.Invoke();
 		}
 
 		/// <summary>
@@ -142,6 +140,12 @@ namespace Harmonica.Music
 		public List<T> ToList()
 		{
 			return new List<T>(_container);
+		}
+
+		public void Clear()
+		{
+			_container.Clear();
+			InvokeQueueChanged();
 		}
 	}
 }

@@ -43,7 +43,6 @@ namespace Harmonica.Controls
 
 		}
 
-		// TODO: add vertical orientation?
 		//public static readonly StyledProperty<Orientation> OrientationProperty =
 		//	AvaloniaProperty.Register<ProgressBar, Orientation>(nameof(Orientation), Orientation.Horizontal);
 

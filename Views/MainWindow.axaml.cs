@@ -11,6 +11,7 @@ using Harmonica.Music;
 using LibVLCSharp.Shared;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,10 +43,15 @@ namespace Harmonica.Views
 		private Label? BackgroundTitle;
 		private Label? BackgroundAuthors;
 
+		private bool changingSong = false;
+
+		private Label? SelectedFolderLabel;
+		private Button? SelectedFolderButton;
 
 		public MainWindow()
 		{
 			InitializeComponent();
+
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -71,7 +77,9 @@ namespace Harmonica.Views
 			this.timeBar = this.FindControl<DynamicSlider>("TimeBar");
 			this.timeBar.OnDragEnded += TimeBar_OnTimeSet;
 
-			this.FindControl<DynamicSlider>("VolumeSlider").OnDragEnded += VolumeSlider_OnVolumeSet;
+			DynamicSlider volumeSlider = this.FindControl<DynamicSlider>("VolumeSlider");
+			volumeSlider.Value = SaveManager.settings.volume;
+			volumeSlider.OnDragEnded += VolumeSlider_OnVolumeSet;
 
 			new Thread(async _ =>
 			{
@@ -102,11 +110,59 @@ namespace Harmonica.Views
 
 			PopulateSongExplorer();
 			PopulateQueue();
-			MusicManager.Instance.SongQueue.QueueChanged += () => Dispatcher.UIThread.InvokeAsync(PopulateQueue);
+			mediaLocator.rootFolderChanged += () =>
+			{
+				Dispatcher.UIThread.InvokeAsync(PopulateSongExplorer);
+				Dispatcher.UIThread.InvokeAsync(UpdateSelectedFolder);
+			};
+			MusicManager.Instance.SongQueue.QueueChanged += () =>
+			{
+				Dispatcher.UIThread.InvokeAsync(PopulateQueue);
+				if(!changingSong && MusicManager.Instance.SongQueue.Size == 1 && (musicPlayer.mediaPlayer.Media == null || musicPlayer.mediaPlayer.Media.State == VLCState.Ended))
+				{
+					Song s = GetNextFromQueue();
+					musicPlayer.Play(mediaLocator.GetMediaAbsolute(MusicManager.LibVLC, s.FilePath));
+				}
+			};
 
 			BackgroundAuthors = this.FindControl<Label>("BackgroundAuthors");
 			BackgroundTitle = this.FindControl<Label>("BackgroundTitle");
 			BackgroundImage = this.FindControl<Image>("BackgroundImage");
+
+			musicPlayer.SongDirectlyPlayed += (sender, song ) => Dispatcher.UIThread.InvokeAsync(() => UpdateBagkround(song));
+
+			SelectedFolderLabel = this.FindControl<Label>("SelectedFolderLabel");
+			SelectedFolderButton = this.FindControl<Button>("SelectFolderButton");
+			SelectedFolderButton.Click += async (s, e) => {
+				OpenFolderDialog dialog = new OpenFolderDialog();
+				string? path = await dialog.ShowAsync(this).ConfigureAwait(false);
+				if (path != null)
+				{
+					SaveManager.settings.songFolder = path;
+					mediaLocator.Initialize(path);
+					Dispatcher.UIThread.InvokeAsync(() => UpdateSelectedFolder());
+				}
+
+			};
+			
+			UpdateSelectedFolder();
+		}
+
+		public void UpdateSelectedFolder()
+		{
+			if(SelectedFolderLabel != null && SelectedFolderButton != null)
+			{
+				if (String.IsNullOrWhiteSpace(mediaLocator.musicPath))
+				{
+					SelectedFolderLabel.Content = "No folder selected";
+					SelectedFolderButton.Content = "Select";
+				}
+				else
+				{
+					SelectedFolderLabel.Content = mediaLocator.musicPath;
+					SelectedFolderButton.Content = "Change";
+				}
+			}
 		}
 
 		public void PopulateQueue()
@@ -147,6 +203,8 @@ namespace Harmonica.Views
 
 		private void PopulateSongFolder(StackPanel parentControl, SongFolder rootFolder)
 		{
+			if (rootFolder == null) return;
+
 			foreach(SongFolder songFolder in rootFolder.SongFolders)
 			{
 				SongFolderControl songFolderControl = new SongFolderControl();
@@ -171,10 +229,12 @@ namespace Harmonica.Views
 		private void VolumeSlider_OnVolumeSet(object? sender, double e)
 		{
 			musicPlayer.SetVolume((int)e);
+			SaveManager.settings.volume = (int)e;
 		}
 
 		private void MusicPlayer_EndReached(object? sender, EventArgs e)
 		{
+			changingSong = true;
 			if (playerControls.CurrentRepeatSate == RepeatState.REPEAT_ON)
 			{
 				// Repeat Queue
@@ -203,6 +263,7 @@ namespace Harmonica.Views
 					musicPlayer.Play(mediaLocator.GetMediaAbsolute(MusicManager.LibVLC, s.FilePath));
 				}
 			}
+			changingSong = false;
 		}
 
 		private Song GetNextFromQueue()
@@ -316,6 +377,12 @@ namespace Harmonica.Views
 			}
 
 			playerControls.SetPlayState(PlayState.PLAYING);
+		}
+
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			SaveManager.Save();
+			base.OnClosing(e);
 		}
 
 		#endregion

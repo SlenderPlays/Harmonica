@@ -14,10 +14,9 @@ namespace Harmonica
 		public override void Initialize()
 		{
 			AvaloniaXamlLoader.Load(this);
-			if (!Design.IsDesignMode)
-				MusicManager.MusicPlayer.PreparePlay(
-					 MusicManager.MediaLocator.GetMedia(MusicManager.LibVLC, "pony_island_soundtrack_mp3/02 - Enter Pony.mp3")
-				);
+			SaveManager.Load();
+
+			
 		}
 
 		public override void OnFrameworkInitializationCompleted()

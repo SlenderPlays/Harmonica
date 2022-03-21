@@ -1,4 +1,5 @@
-﻿using LibVLCSharp.Shared;
+﻿using Harmonica.Models;
+using LibVLCSharp.Shared;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -89,5 +90,13 @@ namespace Harmonica.Music
 
 		private void MediaPlayer_Buffering(object? sender, MediaPlayerBufferingEventArgs e) => buffer = e.Cache;
 
+		public event EventHandler<Song>? SongDirectlyPlayed;
+
+		public void BroadcastSongDirectlyPlayed(Song song)
+		{
+			if (song == null) return;
+
+			SongDirectlyPlayed?.Invoke(this, song);
+		}
 	}
 }

@@ -69,6 +69,7 @@ namespace Harmonica.Controls
 		{
 			if (LinkedSong == null) return;
 
+			MusicManager.MusicPlayer.BroadcastSongDirectlyPlayed(LinkedSong);
 			MusicManager.MusicPlayer.Play(MusicManager.MediaLocator.GetMediaAbsolute(MusicManager.LibVLC, LinkedSong.FilePath));
 		}
 	}

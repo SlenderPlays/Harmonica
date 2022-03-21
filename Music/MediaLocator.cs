@@ -8,13 +8,48 @@ namespace Harmonica.Music
 {
 	class MediaLocator
 	{
-		public string musicPath;
+		public string? musicPath;
 		private FileSystemWatcher watcher;
 
 		public SongFolder rootFolder;
 		public event Action? rootFolderChanged;
 
-		public MediaLocator(string musicPath)
+		private List<string> validExtensions = new List<string>(new string[]
+		{
+			".m4a",
+			".m4b",
+			".m4p",
+			".wav",
+			".aac",
+			".flac",
+			".mp3",
+			".ogg",
+			".oga",
+			".mogg",
+			".webm",
+			".aiff",
+			".pcm",
+			".mp4",
+			".mkv",
+			".flv",
+			".avi",
+			".mov",
+			".qt",
+			".wmv",
+			".m4v",
+			".mpg"
+		});
+
+		public MediaLocator(string? musicPath)
+		{
+			this.musicPath = musicPath;
+			if (!String.IsNullOrWhiteSpace(musicPath))
+			{
+				Initialize(musicPath);
+			}
+		}
+
+		public void Initialize(string musicPath)
 		{
 			this.musicPath = musicPath;
 
@@ -35,6 +70,7 @@ namespace Harmonica.Music
 			watcher.Renamed += FSW_Event;
 
 			rootFolder = ScanMusicFolder(musicPath);
+			rootFolderChanged?.Invoke();
 		}
 
 		public SongFolder ScanMusicFolder(string path)
@@ -43,9 +79,13 @@ namespace Harmonica.Music
 
 			foreach (string filePath in Directory.GetFiles(path))
 			{
-				Song song = new Song(filePath);
-					
-				songFolder.Songs.Add(song);
+				string extension = Path.GetExtension(filePath);
+				if (validExtensions.Contains(extension))
+				{
+					Song song = new Song(filePath);
+
+					songFolder.Songs.Add(song);
+				}
 			}
 			foreach (string folderPath in Directory.GetDirectories(path))
 			{
@@ -63,6 +103,8 @@ namespace Harmonica.Music
 		/// <returns></returns>
 		public Media GetMedia(LibVLC libvlc, string songPath)
 		{
+			if (musicPath == null) return null;
+
 			string fullFilePath;
 			// If there is no '/' or '\' between musicPath and songPath, then we must artificially add a separator
 			// between them, so that the two ends (the end and the start for music and song paths respectively) don't get smooshed together
@@ -90,6 +132,8 @@ namespace Harmonica.Music
 
 		public Media GetMediaAbsolute(LibVLC libvlc, string absoluteSongPath)
 		{
+			if (musicPath == null) return null;
+
 			string songUri = new Uri(absoluteSongPath).AbsoluteUri;
 
 			// If we have a Linux path, simply yank out "//C:/" from the URI
@@ -107,6 +151,7 @@ namespace Harmonica.Music
 			// IDEAS:
 			//// Will create the songs, playlists. The MusicPlayer will have REFERENCES to songs (hash in multi, file/song name on single)
 			////  that can be de-amiguated here? or somewhere else?
+			if (musicPath == null) return;
 
 			rootFolder = ScanMusicFolder(musicPath);
 			rootFolderChanged?.Invoke();

@@ -40,7 +40,7 @@ namespace Harmonica.Music
 		private MusicPlayer musicPlayer;
 		private MediaLocator mediaLocator;
 
-		public string MusicPath { get; private set; }
+		public string? MusicPath { get; private set; }
 
 		public FlexibleQueue<Song> SongQueue { get; private set; } = new FlexibleQueue<Song>();
 
@@ -51,8 +51,10 @@ namespace Harmonica.Music
 			libVLC = new LibVLC();
 			musicPlayer = new MusicPlayer(libVLC);
 			// TODO: Get path from config... Really need to do this soon
-			MusicPath = "D:/Programming/Atestat/WebServer/songs";
+			MusicPath = SaveManager.settings.songFolder;
 			mediaLocator = new MediaLocator(MusicPath);
+
+			mediaLocator.rootFolderChanged += () => SongQueue.Clear();
 		}
 	}
 }
