@@ -11,4 +11,5 @@
 	<StyleInclude Source="/Styles/PlayerControls/ImageButtons/RepeatButton.axaml"/>
 	<StyleInclude Source="/Styles/PlayerControls/ImageButtons/ShuffleButton.axaml"/>
 	<StyleInclude Source="/Styles/PlayerControls/TimeBar.axaml"/>
+	<StyleInclude Source="/Styles/PlayerControls/ImageButtons/QueueButton.axaml" />
 </Styles>

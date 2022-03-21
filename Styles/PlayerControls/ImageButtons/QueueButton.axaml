@@ -1,0 +1,41 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<StackPanel Width="100" Height="100" Margin="10">
+			<Button Classes="QueueButton"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Width="48" Height="24"
+							Margin="20"/>
+		</StackPanel>
+	</Design.PreviewWith>
+
+	<Style Selector="Button.QueueButton">
+		<Setter Property="BorderThickness" Value="0"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Queue.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<Style Selector="Button.QueueButton:pointerover /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.75"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Queue.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style Selector="Button.QueueButton:pressed /template/ ContentPresenter">
+		<Setter Property="Opacity" Value="0.5"/>
+
+		<Setter Property="Background">
+			<Setter.Value>
+				<ImageBrush Source="/Assets/Queue.png" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+</Styles>

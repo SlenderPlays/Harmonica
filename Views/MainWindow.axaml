@@ -82,7 +82,7 @@
 									VerticalAlignment="Top"
 									HorizontalAlignment="Left"
 									Margin="10 0 0 0">
-				<Button Width="24" Height="24" Click="OnQueueButton_Pressed"/>
+				<Button Width="48" Height="30" Classes="QueueButton" Click="OnQueueButton_Pressed"/>
 			</StackPanel>
 			
 			<StackPanel Grid.Row="0" Grid.ColumnSpan="3"
@@ -93,25 +93,30 @@
 				<Button Classes="ShuffleOffButton" Click="OnShuffleButton_Pressed"
 								Name="ShuffleButton"
 								Width="32"
-								Height="32"/>
+								Height="32"
+								Margin="4 0"/>
 
 				<Button Classes="PreviousButton" Click="OnPreviousButton_Pressed"
 								Width="32"
-								Height="32"/>
+								Height="32"
+								Margin="4 0"/>
 				
 				<Button Classes="PlayButton" Click="OnPlayButton_Pressed"
 								Name="PlayPauseButton"
 								Width="32"
-								Height="32"/>
+								Height="32"
+								Margin="4 0"/>
 
 				<Button Classes="NextButton" Click="OnNextButton_Pressed"
 								Width="32"
-								Height="32"/>
+								Height="32"
+								Margin="4 0"/>
 
 				<Button Classes="RepeatOffButton" Click="OnRepeatButton_Pressed"
 								Name="RepeatButton"
 								Width="32"
-								Height="32"/>
+								Height="32"
+								Margin="4 0"/>
 				
 			</StackPanel>
 			
@@ -143,8 +148,8 @@
 									Orientation="Horizontal"
 									VerticalAlignment="Center"
 									HorizontalAlignment="Center">
-				<Image Source="/Assets/avalonia-logo.ico"
-							 Height="24" Width="24"/>
+				<Image Source="/Assets/Audio.png"
+							 Height="32" Width="32" Margin="4 0"/>
 				<controls:DynamicSlider
 					Name="VolumeSlider" Classes="VolumeSlider"
 					Grid.Column="0" Grid.Row="0"
