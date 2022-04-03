@@ -79,6 +79,7 @@ namespace Harmonica.Views
 
 			DynamicSlider volumeSlider = this.FindControl<DynamicSlider>("VolumeSlider");
 			volumeSlider.Value = SaveManager.settings.volume;
+			VolumeSlider_OnVolumeSet(this, volumeSlider.Value);
 			volumeSlider.OnDragEnded += VolumeSlider_OnVolumeSet;
 
 			new Thread(async _ =>
